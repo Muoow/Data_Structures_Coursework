@@ -116,7 +116,7 @@ bool MyPriorityQueue<Type>::getFront(Type& item) const {
 }
 
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
-	std::cout << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]：";
+	std::cout << ">>> " << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]: ";
 	int input;
 	while (true) {
 		std::cin >> input;

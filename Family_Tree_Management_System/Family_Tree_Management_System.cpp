@@ -3,19 +3,18 @@
 #include <conio.h>
 
 template <typename Type>
-class MyTreeNode {
+class MyTreeNode 
+{
 public:
-
 	Type data;
 	ChildNode* children;
-
 	MyTreeNode(const Type& data) : data(data), parent(nullptr), children(nullptr) {}
 	~MyTreeNode();
-
 };
 
 template <typename Type>
-struct ChildNode {
+struct ChildNode 
+{
 	MyTreeNode* child;
 	ChildNode* next;
 	ChildNode(MyTreeNode* c) : child(c), next(nullptr) {}
@@ -23,7 +22,8 @@ struct ChildNode {
 
 
 template <typename Type>
-MyTreeNode<Type>::~MyTreeNode() {
+MyTreeNode<Type>::~MyTreeNode() 
+{
 	ChildNode* current = children;
 	while (current) {
 		ChildNode* next = current->next;
@@ -33,7 +33,8 @@ MyTreeNode<Type>::~MyTreeNode() {
 }
 
 template <typename Type>
-class MyTree {
+class MyTree 
+{
 private:
 
 	MyTreeNode<Type>* root;
@@ -57,8 +58,8 @@ public:
 };
 
 template <typename Type>
-void MyTree<Type>::deleteSubtree(MyTreeNode<Type>* node) {
-
+void MyTree<Type>::deleteSubtree(MyTreeNode<Type>* node)
+{
 	if (node) {
 		ChildNode<Type>* current = node->children;
 		while (current) {
@@ -71,8 +72,8 @@ void MyTree<Type>::deleteSubtree(MyTreeNode<Type>* node) {
 }
 
 template <typename Type>
-MyTreeNode<Type>* MyTree<Type>::findNode(MyTreeNode<Type>* node, const Type& value) {
-
+MyTreeNode<Type>* MyTree<Type>::findNode(MyTreeNode<Type>* node, const Type& value) 
+{
 	if (!node) 
 		return nullptr;
 
@@ -93,8 +94,8 @@ MyTreeNode<Type>* MyTree<Type>::findNode(MyTreeNode<Type>* node, const Type& val
 }
 
 template <typename Type>
-MyTreeNode<Type>* MyTree<Type>::getParent(MyTreeNode<Type>* current, MyTreeNode<Type>* node) {
-
+MyTreeNode<Type>* MyTree<Type>::getParent(MyTreeNode<Type>* current, MyTreeNode<Type>* node) 
+{
 	if (!current || !node)
 		return nullptr;
 
@@ -113,8 +114,8 @@ MyTreeNode<Type>* MyTree<Type>::getParent(MyTreeNode<Type>* current, MyTreeNode<
 }
 
 template <typename Type>
-ChildNode<Type>* MyTree<Type>::getChild(MyTreeNode<Type>* node) {
-
+ChildNode<Type>* MyTree<Type>::getChild(MyTreeNode<Type>* node) 
+{
 	if (!node) 
 		return nullptr;
 
@@ -129,8 +130,8 @@ ChildNode<Type>* MyTree<Type>::getChild(MyTreeNode<Type>* node) {
 }
 
 template <typename Type>
-bool MyTree<Type>::addRoot(const Type& rootdata) {
-
+bool MyTree<Type>::addRoot(const Type& rootdata) 
+{
 	if (root) {
 		return false;
 	}
@@ -147,8 +148,8 @@ bool MyTree<Type>::addRoot(const Type& rootdata) {
 }
 
 template <typename Type>
-bool MyTree<Type>::addChild(const Type& parentData, const Type& childData) {
-
+bool MyTree<Type>::addChild(const Type& parentData, const Type& childData) 
+{
 	MyTreeNode<Type>* parentNode = findNode(root, parentData);
 	if (!parentNode) 
 		return false;
@@ -181,8 +182,8 @@ bool MyTree<Type>::addChild(const Type& parentData, const Type& childData) {
 }
 
 template <typename Type>
-bool MyTree<Type>::modifyNode(const Type& oldData, const Type& newData) {
-
+bool MyTree<Type>::modifyNode(const Type& oldData, const Type& newData) 
+{
 	TreeNode<Type>* node = findNode(root, oldData);
 	if (!node)
 		return false;
@@ -192,14 +193,16 @@ bool MyTree<Type>::modifyNode(const Type& oldData, const Type& newData) {
 
 }
 
-int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
-	std::cout << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]：";
+int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
+{
+	std::cout << ">>> " << "请输入" << prompt << " 整数范围: [" << lowerLimit << "~" << upperLimit << "]: ";
 	int input;
 	while (true) {
 		std::cin >> input;
 		if (std::cin.good() && input >= lowerLimit && input <= upperLimit) {
 			std::cin.clear();
 			std::cin.ignore(INT_MAX, '\n');
+			std::cout << std::endl;
 			return input;
 		}
 		else {
@@ -212,7 +215,8 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
 
 const int NameMaxLength = 32;
 
-struct familyInfo {
+struct familyInfo 
+{
 	char name[NameMaxLength + 1];
 	familyInfo() { strcpy(name, ""); }
 	familyInfo& operator=(const familyInfo& other) { if (this != &other) strcpy(name, other.name); return *this; }
@@ -220,12 +224,14 @@ struct familyInfo {
 	friend std::istream& operator>>(std::istream& in, familyInfo& info);
 };
 
-std::istream& operator>>(std::istream& in, familyInfo& info) {
+std::istream& operator>>(std::istream& in, familyInfo& info) 
+{
 	in.getline(info.name, NameMaxLength + 1);
 	return in;
 }
 
-class family {
+class family 
+{
 private:
 	MyTree<familyInfo> myfamily;
 public:
@@ -239,12 +245,14 @@ public:
 	void countFamilyMembers();
 };
 
-family::family(familyInfo& ancestor) {
+family::family(familyInfo& ancestor) 
+{
 	myfamily.addRoot(ancestor);
 }
 
-bool family::selectOptn() {
-
+bool family::selectOptn() 
+{
+	std::cout << ">>> 请选择要使用的功能: ";
 	char option;
 	while (true) {
 		option = _getch();
@@ -253,49 +261,70 @@ bool family::selectOptn() {
 		}
 		else if (option >= '1' || option <= '5') {
 			std::cout << "[" << option << "]" << std::endl << std::endl;
-			return option - '0';
+			break;
 		}
 	}
 	switch (option) {
-		case '1': completeFamilyMembers(); break;
-		case '2': addFamilyMembers(); break;
-		case '3': removeFamilyMembers(); break;
-		case '4': changeFamilyMembers(); break;
-		case '5': return false;
+		case '1': 
+			completeFamilyMembers(); 
+			break;
+		case '2': 
+			addFamilyMembers(); 
+			break;
+		case '3': 
+			removeFamilyMembers(); 
+			break;
+		case '4': 
+			changeFamilyMembers(); 
+			break;
+		case '5': 
+			return false;
 	}
 	return true;
 
 }
 
-void family::rule() {
+void family::rule() 
+{
 	std::cout << ">>> " << std::endl;
 }
 
-void family::completeFamilyMembers() {
+void family::completeFamilyMembers() 
+{
 
 }
 
-void family::addFamilyMembers() {
+void family::addFamilyMembers() 
+{
 
 }
 
-void family::removeFamilyMembers() {
+void family::removeFamilyMembers() 
+{
 
 }
 
-void family::changeFamilyMembers() {
+void family::changeFamilyMembers() 
+{
 
 }
 
-void family::countFamilyMembers() {
+void family::countFamilyMembers() 
+{
 
 }
 
-int main() {
-
+int main() 
+{
 	std::cout << "+---------------------------------+" << std::endl;
 	std::cout << "|           家谱管理系统          |" << std::endl;
 	std::cout << "|  Family_Tree_Management_System  |" << std::endl;
+	std::cout << "+---------------------------------+" << std::endl;
+	std::cout << "|       [1] --- 完善家谱          |" << std::endl;
+	std::cout << "|       [2] --- 添加家庭成员      |" << std::endl;
+	std::cout << "|       [3] --- 解散局部家庭      |" << std::endl;
+	std::cout << "|       [4] --- 更改成员姓名      |" << std::endl;
+	std::cout << "|       [5] --- 退出程序          |" << std::endl;
 	std::cout << "+---------------------------------+" << std::endl << std::endl;
 
 	std::cout << ">>> 请建立家谱管理系统" << std::endl << std::endl; 
@@ -303,11 +332,7 @@ int main() {
 	familyInfo ancestor;
 	std::cin >> ancestor;
 	family myFamily(ancestor);
-
-	do {
-		std::cout << ">>> 菜单:[1]完善家谱 [2]添加家庭成员 [3]解散局部家庭 [4]更改家庭成员姓名 [5]退出程序" << std::endl;
-		std::cout << ">>> 请选择要使用的功能: ";
-	} while (myFamily.selectOptn());
+	while (myFamily.selectOptn());
 
 	std::cout << ">>> 已成功退出家谱管理系统"  << std::endl;
 	return 0;
