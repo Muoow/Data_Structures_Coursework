@@ -118,13 +118,16 @@ bool MyUndirectedGraph<Type>::addEdge(const Type& vertexA, const Type& vertexB, 
 		return false;
 	}
 
-	graph[indexA][indexB].exist = true;
+	if (!graph[indexA][indexB].exist|| !graph[indexB][indexA].exist) {
+		graph[indexA][indexB].exist = true;
+		graph[indexB][indexA].exist = true;
+		edgeCount++;
+	}
+	
 	graph[indexA][indexB].weight = weight;
 
-	graph[indexB][indexA].exist = true; 
 	graph[indexB][indexA].weight = weight;
 
-	edgeCount++;
 	return true;
 }
 
@@ -315,7 +318,7 @@ void PowerGrid::createGridVertices()
 void PowerGrid::createGridEdges() 
 {
 	int numVertices = grid.getVertexCount();
-	int numEdges = inputInteger(1, numVertices * (numVertices - 1), "要添加的边数量");
+	int numEdges = inputInteger(1, numVertices * (numVertices - 1) / 2, "要添加的边数量");
 
 	for (int i = 0; i < numEdges; i++) {
 		char vertexA, vertexB;

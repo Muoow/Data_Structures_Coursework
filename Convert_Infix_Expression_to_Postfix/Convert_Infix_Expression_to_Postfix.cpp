@@ -1,10 +1,14 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
-#include<sstream>
 #include<new>
-#include<windows.h>
+#include<sstream>
+
+const int MAX_LENGTH = 256;
+const int MAX_TOKEN = 10;
 
 template <typename Type>
-struct MyLinkNode {
+struct MyLinkNode
+{
 	Type data;
 	MyLinkNode<Type>* link;
 	MyLinkNode(MyLinkNode<Type>* ptr = nullptr) : link(ptr) {}
@@ -12,7 +16,8 @@ struct MyLinkNode {
 };
 
 template <typename Type>
-class MyQueue {
+class MyQueue 
+{
 private:
 	MyLinkNode<Type>* front;
 	MyLinkNode<Type>* rear;
@@ -29,12 +34,14 @@ public:
 };
 
 template <typename Type>
-bool MyQueue<Type>::isEmpty() const {
+bool MyQueue<Type>::isEmpty() const 
+{
 	return front == nullptr;
 }
 
 template <typename Type>
-void MyQueue<Type>::makeEmpty() {
+void MyQueue<Type>::makeEmpty() 
+{
 	MyLinkNode<Type>* current;
 	while (front != nullptr) {
 		current = front;
@@ -46,12 +53,14 @@ void MyQueue<Type>::makeEmpty() {
 }
 
 template <typename Type>
-int MyQueue<Type>::Size() const {
+int MyQueue<Type>::Size() const 
+{
 	return count;
 }
 
 template <typename Type>
-void MyQueue<Type>::enqueue(const Type& item) {
+void MyQueue<Type>::enqueue(const Type& item) 
+{
 	MyLinkNode<Type>* newNode = new(std::nothrow)MyLinkNode<Type>(item, nullptr);
 	if (newNode == nullptr) {
 		std::cerr << "Error: Memory allocation failed." << std::endl;
@@ -68,7 +77,8 @@ void MyQueue<Type>::enqueue(const Type& item) {
 }
 
 template <typename Type>
-bool MyQueue<Type>::dequeue(Type& item) {
+bool MyQueue<Type>::dequeue(Type& item)
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -84,7 +94,8 @@ bool MyQueue<Type>::dequeue(Type& item) {
 }
 
 template <typename Type>
-bool MyQueue<Type>::getHead(Type& item) {
+bool MyQueue<Type>::getHead(Type& item)
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -93,7 +104,8 @@ bool MyQueue<Type>::getHead(Type& item) {
 }
 
 template <typename Type>
-class MyStack {
+class MyStack 
+{
 private:
 	MyLinkNode<Type>* topNode;
 	int count;
@@ -111,12 +123,14 @@ public:
 };
 
 template <typename Type>
-bool MyStack<Type>::isEmpty() const {
+bool MyStack<Type>::isEmpty() const 
+{
 	return topNode == nullptr;
 }
 
 template <typename Type>
-void MyStack<Type>::makeEmpty() {
+void MyStack<Type>::makeEmpty() 
+{
 	MyLinkNode<Type>* current;
 	while (topNode != nullptr) {
 		current = topNode;
@@ -127,12 +141,14 @@ void MyStack<Type>::makeEmpty() {
 }
 
 template <typename Type>
-int MyStack<Type>::Size() const {
+int MyStack<Type>::Size() const 
+{
 	return count;
 }
 
 template <typename Type>
-bool MyStack<Type>::Push(Type& item) {
+bool MyStack<Type>::Push(Type& item) 
+{
 	if (count >= max_size) {
 		return false;
 	}
@@ -146,7 +162,8 @@ bool MyStack<Type>::Push(Type& item) {
 }
 
 template <typename Type>
-bool MyStack<Type>::Pop(Type& item) {
+bool MyStack<Type>::Pop(Type& item) 
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -159,7 +176,8 @@ bool MyStack<Type>::Pop(Type& item) {
 }
 
 template <typename Type>
-bool MyStack<Type>::getTop(Type& item) {
+bool MyStack<Type>::getTop(Type& item)
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -167,83 +185,29 @@ bool MyStack<Type>::getTop(Type& item) {
 	return true;
 }
 
-template <typename Type>
-struct TreeNode {
-	Type data;
-	TreeNode<Type>* left;
-	TreeNode<Type>* right;
-	TreeNode(const Type& value) : data(value), left(nullptr), right(nullptr) {}
-};
-
-template <typename Type>
-class BinaryTree {
-private:
-	TreeNode<Type>* root;
-	void preorder(TreeNode<Type>* node);
-	void inorder(TreeNode<Type>* node);
-	void postorder(TreeNode<Type>* node);
-public:
-	BinaryTree() : root(nullptr) {}
-	void preorderTraversal() {
-		preorder(root);
-		std::cout << std::endl;
-	}
-	void inorderTraversal() {
-		inorder(root);
-		std::cout << std::endl;
-	}
-	void postorderTraversal() {
-		postorder(root);
-		std::cout << std::endl;
-	}
-};
-
-template <typename Type>
-void BinaryTree<Type>::preorder(TreeNode<Type>* node) {
-	if (node) {
-		std::cout << node->data; 
-		preorder(node->left);
-		preorder(node->right);
-	}
-}
-
-template <typename Type>
-void BinaryTree<Type>::inorder(TreeNode<Type>* node) {
-	if (node) {
-		inorder(node->left);
-		std::cout << node->data;
-		inorder(node->right);
-	}
-}
-
-template <typename Type>
-void BinaryTree<Type>::postorder(TreeNode<Type>* node) {
-	if (node) {
-		postorder(node->left);
-		postorder(node->right);
-		std::cout << node->data;
-	}
-}
-
-bool isOperator(const char& c) {
+bool isOperator(const char& c) 
+{
 	return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-bool isNum(const char& n) {
+bool isNum(const char& n) 
+{
 	return n >= '0' && n <= '9';
 }
 
-int precedence(const std::string& op) {
-	if (op == "+" || op == "-") {
+int precedence(const char* op)
+{
+	if (std::strcmp(op, "+") == 0 || std::strcmp(op, "-") == 0) {
 		return 1;
 	}
-	if (op == "*" || op == "/") {
+	if (std::strcmp(op, "*") == 0 || std::strcmp(op, "/") == 0) {
 		return 2;
 	}
 	return 0;
 }
 
-int applyOp(int a, int b, char op) {
+int applyOp(int a, int b, char op) 
+{
 	switch (op) {
 		case '+': 
 			return a + b;
@@ -257,150 +221,162 @@ int applyOp(int a, int b, char op) {
 	return 0;
 }
 
-#include <string>
-
-struct Element {
-	double num;
-	std::string op;
-	bool isNumber; 
-	Element() : num(0), op(""), isNumber(true) {}
-	Element(double n) : num(n), op(""), isNumber(true) {}
-	Element(const std::string& o) : num(0), op(o), isNumber(false) {}
+struct Token 
+{
+	char value[MAX_TOKEN];
+	bool isNumber;
 };
 
-class MyExpression {
+class MyExpression 
+{
 private:
-	std::string expression;
-	MyStack<Element> s1;
-	MyQueue<Element> q1;
+	char expression[MAX_LENGTH];
+	MyStack<Token> s1;
+	MyQueue<Token> q1;
 public:
 	MyExpression();
 	bool inputExpression();
 	void infixToPostfix();
 };
 
-MyExpression::MyExpression() {
+MyExpression::MyExpression() 
+{
 	while (!inputExpression())
-		std::cout << "The expression input format is incorrect." << std::endl;
+		std::cout << "表达式输入的格式有误！" << std::endl;
 }
 
-bool MyExpression::inputExpression() {
-	std::cout << "Please enter an arithmetic expression.(Separate expression elements with spaces)" << std::endl;
-	getline(std::cin, expression);
+bool MyExpression::inputExpression() 
+{
+	std::cout << "请输入一个算术表达式 (在每个运算数/运算符之间用空格隔开)" << std::endl;
+	std::cin.getline(expression, sizeof(expression));
+	size_t len = std::strlen(expression);
 	if ((isOperator(expression[0]) || expression[0] == ')') ||
-		(isOperator(expression.back()) || expression.back() == '(')) {
+		(isOperator(expression[len - 1]) || expression[len - 1] == '(')) {
 		return false;
 	}
 	int openParentheses = 0;
-	//for (int i = 0; i < expression.size();) {
-	//	char element = expression[i];
-	//	if (element == ' ') {
-	//		i++;
-	//		continue;
-	//	}
-	//	int j = 1;
-	//	while (expression[i + j] == ' ') {
-	//		j++;
-	//	}
-	//	if (isOperator(element)) {
-	//		if (isOperator(expression[i + j]) ||
-	//			expression[i + j] == ')') {
-	//			return false;
-	//		}
-	//	}
-	//	else if (isNum(element)) {
-	//		if (expression[i + j] == '(') {
-	//			return false;
-	//		}
-	//	}
-	//	else if (element == '(') {
-	//		openParentheses++;
-	//		if (expression[i + j] == ')')
-	//			return false;
-	//	}
-	//	else if (element == ')') {
-	//		openParentheses--;
-	//		if (expression[i + j] == '(')
-	//			return false;
-	//	}
-	//	else {
-	//		return false;
-	//	}
-	//	i += j;
-	//}
-	if (openParentheses != 0) {
-		return false;
-	}
-	return true;
-}
-
-void MyExpression::infixToPostfix() {
-	std::istringstream iss(expression);
-	std::string token;
-	while (iss >> token) { 
-
-		if (token == "+" || token == "-" || token == "*" || token == "/") {
-			Element element(token);
-			if (!s1.isEmpty()) {
-				Element stacktop;
-				s1.getTop(stacktop);
-				while (!s1.isEmpty() && precedence(stacktop.op) >= precedence(token)) {
-					Element temp;
-					s1.Pop(temp);
-					q1.enqueue(temp);
-					if (!s1.isEmpty())
-						s1.getTop(stacktop);
-				}
+	for (size_t i = 0; i < len;) {
+		char element = expression[i];
+		if (element == ' ') {
+			i++;
+			continue;
+		}
+		size_t j = 1;
+		while (expression[i + j] == ' ') {
+			j++;
+		}
+		if (isOperator(element)) {
+			if (isOperator(expression[i + j]) || expression[i + j] == ')') {
+				return false;
 			}
-			s1.Push(element);
 		}
-		else if (token == "(") {
-			Element element(token);
-			s1.Push(element);
+		else if (std::isdigit(element)) {
+			if (expression[i + j] == '(') {
+				return false;
+			}
 		}
-		else if (token == ")") {
-			if (!s1.isEmpty()) {
-				Element stacktop;
-				s1.getTop(stacktop);
-				while (stacktop.op != "(") {
-					Element temp;
-					s1.Pop(temp);
-					q1.enqueue(temp);
-					if (!s1.isEmpty())
-						s1.getTop(stacktop);
-				}
-				s1.Pop(stacktop);
+		else if (element == '(') {
+			openParentheses++;
+			if (expression[i + j] == ')') {
+				return false;
+			}
+		}
+		else if (element == ')') {
+			openParentheses--;
+			if (expression[i + j] == '(') {
+				return false;
 			}
 		}
 		else {
-			try {
-				double number = std::stod(token);
-				Element element(number);
-				q1.enqueue(element);
-			}
-			catch (const std::invalid_argument&) {
-				std::cout << "Unrecognized token:" << token << std::endl;
-			}
+			return false;
 		}
+		i += j;
 	}
-	while (!s1.isEmpty()) {
-        Element element;
-        s1.Pop(element);
-        q1.enqueue(element);
-    }
-	while (!q1.isEmpty()) {
-		Element element;
-		q1.dequeue(element);
-		if (!element.isNumber)
-			std::cout << element.op;
-		else
-			std::cout << element.num;
-		if (!q1.isEmpty())
-			std::cout << " ";
-	}
+	return openParentheses == 0;
 }
 
-int main() {
+void MyExpression::infixToPostfix()
+{
+	std::istringstream stream(expression);
+	char token[MAX_TOKEN];
+
+	while (stream >> token) {
+		Token t;
+		/* 数字处理 */
+		if (std::isdigit(token[0]) || (token[0] == '-' && std::isdigit(token[1]))) {
+			std::strcpy(t.value, token);
+			t.isNumber = true;
+			q1.enqueue(t);
+			continue;
+		}
+		/* 将运算符或括号拷贝到 Token */ 
+		std::strcpy(t.value, token);
+		t.isNumber = false;
+
+		/* 运算符处理 */
+		if (isOperator(t.value[0])) {
+			while (!s1.isEmpty()) {
+				Token top;
+				s1.getTop(top);
+				/* 比较优先级并处理栈顶元素 */ 
+				if (!top.isNumber && precedence(top.value) >= precedence(t.value)) {
+					Token temp;
+					s1.Pop(temp);
+					q1.enqueue(temp);
+				}
+				else {
+					break;
+				}
+			}
+			s1.Push(t);
+		}
+		/* 左括号处理 */  
+		else if (std::strcmp(t.value, "(") == 0) {
+			s1.Push(t);
+		}
+		/* 右括号处理 */
+		else if (std::strcmp(t.value, ")") == 0) {
+			while (!s1.isEmpty()) {
+				Token top;
+				s1.getTop(top);
+
+				if (std::strcmp(top.value, "(") == 0) {
+					s1.Pop(top); 
+					break;
+				}
+				Token temp;
+				s1.Pop(temp);
+				q1.enqueue(temp);
+			}
+		}
+		/* 未知符号处理 */
+		else {
+			std::cout << "Unrecognized token: " << token << std::endl;
+		}
+	}
+
+	/* 将栈中剩余的元素全部弹出到队列 */ 
+	while (!s1.isEmpty()) {
+		Token t;
+		s1.Pop(t);
+		q1.enqueue(t);
+	}
+
+	/* 输出后缀表达式 */ 
+	while (!q1.isEmpty()) {
+		Token t;
+		q1.dequeue(t);
+		std::cout << t.value;
+		if (!q1.isEmpty()) {
+			std::cout << " ";
+		}
+	}
+	std::cout << std::endl;
+}
+
+int main() 
+{
+
 	MyExpression infix;
 	infix.infixToPostfix();
 	return 0;
