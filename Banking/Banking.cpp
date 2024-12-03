@@ -4,7 +4,8 @@
 #include<new>
 
 template <typename Type>
-struct MyLinkNode {
+struct MyLinkNode 
+{
 	Type data;
 	MyLinkNode<Type>* link;
 	MyLinkNode(MyLinkNode<Type>* ptr = nullptr) : link(ptr) {}
@@ -12,7 +13,8 @@ struct MyLinkNode {
 };
 
 template <typename Type>
-class MyQueue {
+class MyQueue 
+{
 private:
 	MyLinkNode<Type>* front;
 	MyLinkNode<Type>* rear;
@@ -29,12 +31,14 @@ public:
 };
 
 template <typename Type>
-bool MyQueue<Type>::isEmpty() const {
+bool MyQueue<Type>::isEmpty() const 
+{
 	return front == nullptr;
 }
 
 template <typename Type>
-void MyQueue<Type>::makeEmpty() {
+void MyQueue<Type>::makeEmpty() 
+{
 	MyLinkNode<Type>* current;
 	while (front != nullptr) {
 		current = front;
@@ -46,12 +50,14 @@ void MyQueue<Type>::makeEmpty() {
 }
 
 template <typename Type>
-int MyQueue<Type>::Size() const {
+int MyQueue<Type>::Size() const 
+{
 	return count;
 }
 
 template <typename Type>
-void MyQueue<Type>::enQueue(const Type& item) {
+void MyQueue<Type>::enQueue(const Type& item) 
+{
 	MyLinkNode<Type>* newNode = new(std::nothrow)MyLinkNode<Type>(item, nullptr);
 	if (newNode == nullptr) {
 		std::cerr << "Error: Memory allocation failed." << std::endl;
@@ -68,7 +74,8 @@ void MyQueue<Type>::enQueue(const Type& item) {
 }
 
 template <typename Type>
-bool MyQueue<Type>::deQueue(Type& item) {
+bool MyQueue<Type>::deQueue(Type& item) 
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -84,7 +91,8 @@ bool MyQueue<Type>::deQueue(Type& item) {
 }
 
 template <typename Type>
-bool MyQueue<Type>::getHead(Type& item) {
+bool MyQueue<Type>::getHead(Type& item) 
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -95,7 +103,8 @@ bool MyQueue<Type>::getHead(Type& item) {
 const int PROCESSSPEED_A = 2;
 const int PROCESSSPEED_B = 1;
 
-class Bank {
+class Bank 
+{
 private:
 	MyQueue<int> queueA;
 	MyQueue<int> queueB;
@@ -107,7 +116,8 @@ public:
 	bool receiveCommand();
 };
 
-int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
+int inputInteger(int lowerLimit, int upperLimit, const char* prompt) 
+{
 	std::cout << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]：";
 	int input;
 	while (true) {
@@ -125,8 +135,8 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
 	}
 }
 
-void Bank::lineUp() {
-
+void Bank::lineUp() 
+{
 	std::cout << std::endl;
 	int count = inputInteger(1, 1000, "顾客人数");
 
@@ -156,8 +166,8 @@ void Bank::lineUp() {
 
 }
 
-void Bank::dealWith() {
-
+void Bank::dealWith() 
+{
 	std::cout << std::endl << ">>> 开始处理顾客队列..." << std::endl;
 
 	std::cout << std::endl << ">>> ";
@@ -197,8 +207,8 @@ void Bank::dealWith() {
 
 }
 
-bool Bank::receiveCommand() {
-
+bool Bank::receiveCommand() 
+{
 	char command;
 
 	std::cout << std::endl << ">>> 是否继续服务下一批顾客？(Y/N):";
@@ -218,8 +228,8 @@ bool Bank::receiveCommand() {
 
 }
 
-int main(){
-
+int main()
+{
 	std::cout << std::endl << ">>> 欢迎进入银行排队系统!" << std::endl;
 
 	Bank bank;

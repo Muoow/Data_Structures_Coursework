@@ -1,19 +1,12 @@
-/****************************************************************
- * Project Name:  Exam_Registration_System
- * File Name:     Exam_Registration_System.cpp
- * File Function: ���Ա���ϵͳ��ʵ��
- * Author:        ����
- ****************************************************************/
-
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
 #include <new>
-using namespace std;
 
 enum Operation { Cancel, Insert, Delete, Find, Update, Count, Rule };
 
-struct Student {
+struct Student 
+{
     string examID = "";
     string name = "";
     string gender = "";
@@ -22,7 +15,8 @@ struct Student {
 };
 
 template <typename Type>
-struct MyLinkNode {
+struct MyLinkNode 
+{
     Type data;
     MyLinkNode<Type>* next;
     MyLinkNode(MyLinkNode<Type>* ptr = nullptr) { next = ptr; }
@@ -30,7 +24,8 @@ struct MyLinkNode {
 };
 
 template <typename Type>
-class MyList {
+class MyList 
+{
 private:
     MyLinkNode<Type>* head;
     MyLinkNode<Type>* tail;
@@ -50,17 +45,19 @@ public:
 };
 
 template <typename Type>
-MyList<Type>::MyList() {
-    head = new(nothrow) MyLinkNode<Type>;
+MyList<Type>::MyList() 
+{
+    head = new(std::nothrow) MyLinkNode<Type>;
     if (head == nullptr) {
-        cerr << "Error: Memory allocation failed." << endl;
+        std::cerr << "Error: Memory allocation failed." << std::endl;
         exit(-1);
     }
     tail = head;
 }
 
 template <typename Type>
-MyList<Type>::~MyList() {
+MyList<Type>::~MyList() 
+{
     MyLinkNode<Type>* current = head;
     while (current != nullptr) {
         MyLinkNode<Type>* nextNode = current->next;
@@ -72,7 +69,8 @@ MyList<Type>::~MyList() {
 }
 
 template <typename Type>
-int MyList<Type>::getLength(void) const {
+int MyList<Type>::getLength(void) const 
+{
     int len = 0;
     MyLinkNode<Type>* current = head->next;
     while (current != nullptr) {
@@ -83,17 +81,20 @@ int MyList<Type>::getLength(void) const {
 }
 
 template <typename Type>
-MyLinkNode<Type>* MyList<Type>::getHead(void) const {
+MyLinkNode<Type>* MyList<Type>::getHead(void) const 
+{
     return head;
 }
 
 template <typename Type>
-MyLinkNode<Type>* MyList<Type>::getTail(void) const {
+MyLinkNode<Type>* MyList<Type>::getTail(void) const 
+{
     return tail;
 }
 
 template <typename Type>
-MyLinkNode<Type>* MyList<Type>::search(Type item) const {
+MyLinkNode<Type>* MyList<Type>::search(Type item) const 
+{
     Student* current = head->next;
     while (current != nullptr) {
         if (current->data == item)
@@ -105,7 +106,8 @@ MyLinkNode<Type>* MyList<Type>::search(Type item) const {
 }
 
 template <typename Type>
-MyLinkNode<Type>* MyList<Type>::locate(int i) const {
+MyLinkNode<Type>* MyList<Type>::locate(int i) const 
+{
     if (i < 0)
         return nullptr;
     MyLinkNode<Type>* current = head;
@@ -118,7 +120,8 @@ MyLinkNode<Type>* MyList<Type>::locate(int i) const {
 }
 
 template <typename Type>
-bool MyList<Type>::getData(int i, Type& item) const {
+bool MyList<Type>::getData(int i, Type& item) const
+{
     if (i < 0)
         return false;
     MyLinkNode<Type>* current = locate(i);
@@ -131,7 +134,8 @@ bool MyList<Type>::getData(int i, Type& item) const {
 }
 
 template <typename Type>
-bool MyList<Type>::setData(int i, Type& item) {
+bool MyList<Type>::setData(int i, Type& item)
+{
     if (i < 0)
         return false;
     MyLinkNode<Type>* current = locate(i);
@@ -144,11 +148,12 @@ bool MyList<Type>::setData(int i, Type& item) {
 }
 
 template <typename Type>
-bool MyList<Type>::insert(int i, Type& item) {
+bool MyList<Type>::insert(int i, Type& item) 
+{
     MyLinkNode<Type>* prev = locate(i - 1);
     if (prev == nullptr)
         return false;
-    MyLinkNode<Type>* newNode = new(nothrow)MyLinkNode<Type>(item);
+    MyLinkNode<Type>* newNode = new(std::nothrow)MyLinkNode<Type>(item);
     if (newNode == nullptr) {
         cerr << "Error: Memory allocation failed." << endl;
         exit(-1);
@@ -161,7 +166,8 @@ bool MyList<Type>::insert(int i, Type& item) {
 }
 
 template <typename Type>
-bool MyList<Type>::remove(int i, Type& item) {
+bool MyList<Type>::remove(int i, Type& item) 
+{
     MyLinkNode<Type>* prev = locate(i - 1);
     MyLinkNode<Type>* current = prev->next;
     if (prev == nullptr || current == nullptr)
@@ -173,11 +179,13 @@ bool MyList<Type>::remove(int i, Type& item) {
 }
 
 template <typename Type>
-bool MyList<Type>::isEmpty(void) const {
+bool MyList<Type>::isEmpty(void) const
+{
     return head->next == nullptr;
 }
 
-bool isNumberString(const string str) {
+bool isNumberString(const std::string str)
+{
     int i = 0;
     while (str[i] != '\0') {
         if (str[i] >= '0' && str[i] <= '9')
@@ -188,26 +196,28 @@ bool isNumberString(const string str) {
     return true;
 }
 
-string subString(string& str, int len) {
+std::string subString(std::string& str, int len)
+{
     if (str.length() > len) {
-        cout << endl << "����" << len << "���ַ������Զ��ض�" << endl;
+        std::cout << std::endl << "超过" << len << "个字符的内容将自动截断" << std::endl;
         str = str.substr(0, len);
     }
     return str;
 }
 
-int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
-    cout << "������" << prompt << " [������Χ: " << lowerLimit << "~" << upperLimit << "]:";
+int inputInteger(int lowerLimit, int upperLimit, const char* prompt) 
+{
+    std::cout << ">>> 请输入" << prompt << " [范围: " << lowerLimit << "~" << upperLimit << "]:";
     double input;
     while (true) {
-        cin >> input;
+        std::cin >> input;
         if (cin.good() && input == static_cast<int>(input) && input >= lowerLimit && input <= upperLimit) {
             cin.clear();
             cin.ignore(INT_MAX, '\n');
             return static_cast<int>(input);
         }
         else {
-            cerr << endl << ">>> " << prompt << "���벻�Ϸ������������룡" << endl << endl;
+            std::cout << std::endl << ">>> " << prompt << "输入不合法，请重新输入！" << std::endl << std::endl;
             cin.clear();
             cin.ignore(INT_MAX, '\n');
         }
@@ -220,7 +230,7 @@ private:
 public:
     Manager(int stuNum);
     void buildStudentList(int stuNum);
-    int findPosByStuNo(const string id);
+    int findPosByStuNo(const std::string id);
     int GetPosByStuNo(const char* prompt);
     Student studentInput();
     void addStudent();
@@ -231,90 +241,97 @@ public:
     void outputRules(); 
 };
 
-Manager::Manager(int stuNum) {
+Manager::Manager(int stuNum)
+{
     buildStudentList(stuNum);
 }
 
-Student Manager::studentInput() {
+Student Manager::studentInput() 
+{
     Student newstudent;
     while (true) {
-        cin >> newstudent.examID;
+        std::cin >> newstudent.examID;
         newstudent.examID = subString(newstudent.examID, 12);
         if (!isNumberString(newstudent.examID)) {
-            cout << endl << "ѧ�����벻�Ϸ������������룡" << endl;
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
+            std::cout << std::endl << "学号输入不合法，请重新输入！" << endl;
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
             continue;
         }
         else if (findPosByStuNo(newstudent.examID)) {
-            cout << endl << "�Ѵ��ڿ�����ͬ�Ŀ��������������룡" << endl << endl;
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
+            std::cout << std::endl << "已存在相同的考试号，请重新输入！" << std::endl << std::endl;
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
             continue;
         }
         break;
     }
     while (true) {
-        cin >> newstudent.name;
+        std::cin >> newstudent.name;
         newstudent.name = subString(newstudent.name, 24);
         break;
     }
     while (true) {
-        cin >> newstudent.gender;
-        if (newstudent.gender == "��" || newstudent.gender == "Ů")
+        std::cin >> newstudent.gender;
+        if (newstudent.gender == "男" || newstudent.gender == "女")
             break;
         else
-            cout << endl << "�Ա����벻�Ϸ������������룡" << endl << endl;
+            std::cout << std::endl << "性别输入不合法，请重新输入！" << std::endl << std::endl;
     }
     while (true) {
-        cin >> newstudent.age;
+        std::cin >> newstudent.age;
         if (newstudent.age >= 1 && newstudent.age <= 99)
             break;
         else
-            cout << endl << "�������벻�Ϸ������������룡" << endl << endl;
+            std::cout << std::endl << "年龄输入不合法，请重新输入！" << std::endl << std::endl;
     }
     while (true) {
-        cin >> newstudent.examType;
+        std::cin >> newstudent.examType;
         newstudent.examType = subString(newstudent.examType, 36);
         break;
     }
     return newstudent;
 }
 
-void inputPrompt(const string str) {
-    cout << endl << ">>> ����������" << str << "�Ŀ��ţ��������Ա����估�������" << endl << endl;
+void inputPrompt(const std::string str)
+{
+    std::cout << std::endl << ">>> 请输入关于" << str << "的考试号、姓名及其他信息" << std::endl << std::endl;
 }
 
-void printHeader(string str) {
-    cout << ">>> " << str << endl;
-    cout << "+------------------------------------------------------------------------------+" << endl;
-    cout << "|      ����      |          ����          | �Ա� | ���� |       �������       |" << endl;
-    cout << "+------------------------------------------------------------------------------+" << endl;
+void printHeader(std::string str)
+{
+    std::cout << ">>> " << str << std::endl;
+    std::cout << "+------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "|      考试号      |          姓名          | 性别 | 年龄 |       考试类型     |" << std::endl;
+    std::cout << "+------------------------------------------------------------------------------+" << std::endl;
 }
 
-void printStuinfo(Student stu) {
-    cout << "| ";
-    cout << setw(14) << left << stu.examID << " | "
-        << setw(22) << left << stu.name << " | "
-        << setw(4) << left << stu.gender << " | "
-        << setw(4) << left << stu.age << " | "
-        << setw(20) << left << stu.examType << " |";
-    cout << endl;
+void printStuinfo(Student stu)
+{
+    std::cout << "| ";
+    std::cout << std::setw(14) << std::left << stu.examID << " | "
+        << std::setw(22) << std::left << stu.name << " | "
+        << std::setw(4) << std::left << stu.gender << " | "
+        << std::setw(4) << std::left << stu.age << " | "
+        << std::setw(20) << std::left << stu.examType << " |";
+    std::cout << std::endl;
 }
 
-void printFooter() {
-    cout << "+------------------------------------------------------------------------------+" << endl;
+void printFooter()
+{
+    std::cout << "+------------------------------------------------------------------------------+" << std::endl;
 }
     
 
-void Manager::buildStudentList(int stuNum) {
-    inputPrompt("ȫ�忼��");
+void Manager::buildStudentList(int stuNum)
+{
+    inputPrompt("全部考生");
     for (int count = 1; count <= stuNum; count++) {
         Student temp = studentInput();
         student.insert(count, temp);
     }
-    cout << endl << ">>> ����ϵͳ������� (��������: " << stuNum << " )" << endl;
-    printHeader("ȫ�忼������Ϣ����");
+    std::cout << std::endl << ">>> 考生系统初始化完成 (考生总数: " << stuNum << " )" << std::endl;
+    printHeader("全部考生的详细信息如下");
     for (int i = 1; i <= stuNum; i++) {
         Student temp;
         student.getData(i, temp);
@@ -323,7 +340,8 @@ void Manager::buildStudentList(int stuNum) {
     printFooter();
 }
 
-int Manager::findPosByStuNo(const string id) {
+int Manager::findPosByStuNo(const std::string id)
+{
     MyLinkNode<Student>* current = student.getHead()->next;
     int position = 1;
     while (current != nullptr) {
@@ -335,16 +353,17 @@ int Manager::findPosByStuNo(const string id) {
     return 0;
 }
 
-int Manager::GetPosByStuNo(const char* prompt) {
-    string id;
-    cout << "������" << prompt << "�Ŀ���:";
+int Manager::GetPosByStuNo(const char* prompt)
+{
+    std::string id;
+    std::cout << "请输入" << prompt << "的考试号:";
     while (true) {
-        cin >> id;
+        std::cin >> id;
         id = subString(id, 12);
         if (!isNumberString(id)) {
-            cout << endl << "ѧ�����벻�Ϸ������������룡" << endl;
-            cin.clear();
-            cin.ignore(INT_MAX, '\n'); 
+            std::cout << std::endl << "学号输入不合法，请重新输入！" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
             continue;
         }
         break;
@@ -352,97 +371,99 @@ int Manager::GetPosByStuNo(const char* prompt) {
     return findPosByStuNo(id);
 }
 
-void Manager::addStudent() {
-    int pos = inputInteger(1, student.getLength() + 1, "����ӿ�����λ��");
-    inputPrompt("����ӿ���");
+void Manager::addStudent() 
+{
+    int pos = inputInteger(1, student.getLength() + 1, "插入考生的位置");
+    inputPrompt("新增考生");
     Student temp = studentInput();
     student.insert(pos, temp);
 }
 
-void Manager::deleteStudent() {
+void Manager::deleteStudent() 
+{
     if (student.getLength() == 0) {
-        cout << endl << ">>> ������Ϣ�б�Ϊ�գ��޷���������!" << endl;
+        std::cout << std::endl << ">>> 考生信息表为空，无法执行删除操作!" << std::endl;
         return;
     }
-    int pos = GetPosByStuNo("��ɾ���Ŀ���");
+    int pos = GetPosByStuNo("需删除的考生");
     if (pos == 0) {
-        cout << endl << ">>> δ��ѯ���ÿ���" << endl;
+        std::cout << std::endl << ">>> 未查询到该考生" << std::endl;
         return;
     }
     Student temp;
     student.remove(pos, temp);
 }
 
-void Manager::findStudent() {
+void Manager::findStudent() 
+{
     if (student.isEmpty()) {
-        cout << endl << ">>> ������Ϣ�б�Ϊ��!" << endl;
+        std::cout << std::endl << ">>> 考生信息表为空!" << std::endl;
         return;
     }
-    int pos = GetPosByStuNo("����ѯ�Ŀ���");
+    int pos = GetPosByStuNo("需查询的考生");
     if (pos == 0) {
-        cout << endl << ">>> δ��ѯ���ÿ���" << endl;
+        std::cout << std::endl << ">>> 未查询到该考生" << std::endl;
         return;
     }
     Student temp;
     student.getData(pos, temp);
-    printHeader("�ÿ�������Ϣ����");
+    printHeader("该考生的详细信息如下");
     printStuinfo(temp);
     printFooter();
 }
 
-void Manager::updateStudent() {
+void Manager::updateStudent()
+{
     if (student.isEmpty()) {
-        cout << endl << ">>> ������Ϣ�б�Ϊ��!" << endl;
+        std::cout << std::endl << ">>> 考生信息表为空!" << std::endl;
         return;
     }
-    int pos = GetPosByStuNo("���޸ĵĿ���");
+    int pos = GetPosByStuNo("需修改的考生");
     if (pos == 0) {
-        cout << endl << ">>> δ��ѯ���ÿ���" << endl;
+        std::cout << std::endl << ">>> 未查询到该考生" << std::endl;
         return;
     }
-    inputPrompt("���޸Ŀ���");
+    inputPrompt("需修改的考生");
     Student temp = studentInput();
     student.setData(pos, temp);
 }
 
-void Manager::statisticsFunction() {
+void Manager::statisticsFunction()
+{
     if (student.isEmpty()) {
-        cout << endl << ">>> ������Ϣ�б�Ϊ��!" << endl;
+        std::cout << std::endl << ">>> 考生信息表为空!" << std::endl;
         return;
     }
-    printHeader("ȫ�忼������Ϣ����");
+    printHeader("全部考生的详细信息如下");
     for (int i = 1; i <= student.getLength(); i++) {
         Student temp;
         student.getData(i, temp);
         printStuinfo(temp);
     }
     printFooter();
-    cout << endl;
-
+    std::cout << std::endl;
 }
 
-void Manager::outputRules() {
-    cout << endl;
-    cout << "+----------------------------------------------------------------------------------+" << endl;
-    cout << "| [����Ϣϵͳ�ɽ��еĲ���] [1]���� [2]ɾ�� [3]���� [4]�޸� [5]ͳ�� [6]���� [0]�˳� |" << endl;
-    cout << "+----------------------------------------------------------------------------------+" << endl;
-    cout << endl;
-    cout << "+----------------------------------------------------------------------------------+" << endl;
-    cout << "|                            [��Ϣ����ʱ��ʽ��ע������]                            |" << endl;
-    cout << "+----------------------------------------------------------------------------------+" << endl;
-    cout << "| [�����ʽ] ���� ���� �Ա� ���� ������� (�ÿո�ָ�����)                         |" << endl;
-    cout << "| [��    ��] ������ 12 �������ַ���ɵ��ַ������������ֽ����ض�                    |" << endl;
-    cout << "| [��    ��] ������ 24 ��Ӣ���ַ��� 12 �������ַ���ɵ��ַ������������ֽ����ض�    |" << endl;
-    cout << "| [��    ��] �� / Ů                                                               |" << endl;
-    cout << "| [��    ��] �� 1 �� 99 ��Χ�ڵ���������                                           |" << endl;
-    cout << "| [�������] ������ 32 ��Ӣ���ַ��� 16 �������ַ���ɵ��ַ������������ֽ����ض�    |" << endl;
-    cout << "+----------------------------------------------------------------------------------+" << endl;
-    cout << endl;
+void Manager::outputRules()
+{
+    std::cout << std::endl;
+    std::cout << "+----------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "|                           [信息输入的格式请注意以下规则]                         |" << std::endl;
+    std::cout << "+----------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "| [格式说明] 考试号 姓名 性别 年龄 考试类型 (以空格分隔各项)                       |" << std::endl;
+    std::cout << "| [考试号] 由 12 位以下字符组成，超长将自动截断                                    |" << std::endl;
+    std::cout << "| [姓名] 由 24 位以内的字符组成，超长将自动截断                                    |" << std::endl;
+    std::cout << "| [性别] 男 / 女                                                                   |" << std::endl;
+    std::cout << "| [年龄] 在 1 到 99 范围内的整数                                                   |" << std::endl;
+    std::cout << "| [考试类型] 由 32 位以内的字符组成，超长将自动截断                                |" << std::endl;
+    std::cout << "+----------------------------------------------------------------------------------+" << std::endl;
+    std::cout << std::endl;
 }
 
-Operation selectOperation() {
-    cout << endl << ">>> �˵�: [1] ���빦�� [2]ɾ������ [3]��ѯ���� [4]�޸Ĺ��� [5]ͳ�ƹ��� [6]����˵�� [0]�˳�ϵͳ" << endl;
-    cout << endl << "��ѡ����Ҫ���еĲ���:";
+Operation selectOperation() 
+{
+    std::cout << std::endl << ">>> 菜单: [1]新增 [2]删除 [3]查询 [4]修改 [5]统计 [6]帮助 [0]退出" << std::endl;
+    std::cout << std::endl << "请选择要使用的功能: ";
     char optn;
     while (true) {
         optn = _getch();
@@ -450,20 +471,21 @@ Operation selectOperation() {
             optn = _getch();
         }
         else if (optn >= '0' && optn <= '6') {
-            cout << "[" << optn << "]" << endl << endl;
+            std::cout << "[" << optn << "]" << std::endl << std::endl;
             return Operation(optn - '0');
         }
     }
 }
 
-void examRegistrationSystem() {
-    cout << "+----------------------------+" << endl;
-    cout << "|        ���Ա���ϵͳ        |" << endl;
-    cout << "|  Exam Registration System  |" << endl;
-    cout << "+----------------------------+" << endl;
-    cout << endl << ">>> �뽨��������Ϣϵͳ" << endl;
-    cout << endl << "�����뿼������ [������Χ: 1~2147483647]:";
-    int studentNum = inputInteger(1, INT_MAX, "��������");
+int main() 
+{
+    /* 进入考试报名系统 */
+    std::cout << "+----------------------------+" << std::endl;
+    std::cout << "|        考生报名系统        |" << std::endl;
+    std::cout << "|  Exam Registration System  |" << std::endl;
+    std::cout << "+----------------------------+" << std::endl;
+    std::cout << std::endl << ">>> 正在初始化考生信息系统" << std::endl;
+    int studentNum = inputInteger(1, INT_MAX, "考生人数");
     Manager manager(studentNum);
     while (true) {
         int operation = int(selectOperation());
@@ -480,13 +502,10 @@ void examRegistrationSystem() {
         else if (operation == Rule)
             manager.outputRules();
         else {
-            cout << endl << ">>> ���Ա���ϵͳ���˳�" << endl;
+            std::cout << std::endl << ">>> 考生报名系统已退出" << std::endl;
             break;
         }
     }
-}
-
-int main() {
-    examRegistrationSystem();
+    /* 程序退出 */
     return 0;
 }

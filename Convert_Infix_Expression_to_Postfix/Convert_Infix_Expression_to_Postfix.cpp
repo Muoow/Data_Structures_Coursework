@@ -378,6 +378,10 @@ int main()
 {
 
 	MyExpression infix;
+
+
 	infix.infixToPostfix();
+
+
 	return 0;
 }
