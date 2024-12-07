@@ -376,12 +376,12 @@ void MyExpression::infixToPostfix()
 
 int main() 
 {
-
+	// 初始化算术表达式
 	MyExpression infix;
 
-
+	// 算术表达式中缀转后缀
 	infix.infixToPostfix();
 
-
+	// 程序结束
 	return 0;
 }

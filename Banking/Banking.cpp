@@ -1,8 +1,21 @@
+/****************************************************************
+ * Project Name:  Banking
+ * File Name:     Banking.cpp
+ * File Function: 银行业务处理
+ * Author:        张翔
+ * Update Date:   2024/12/7
+ ****************************************************************/
+
 #include<iostream>
 #include<limits>
 #include<conio.h>
 #include<new>
 
+// 常变量的定义
+const int PROCESSSPEED_A = 2;
+const int PROCESSSPEED_B = 1;
+
+// MyLinkNode结构体的定义
 template <typename Type>
 struct MyLinkNode 
 {
@@ -12,6 +25,7 @@ struct MyLinkNode
 	MyLinkNode(const Type& item, MyLinkNode<Type>* ptr = nullptr) : data(item), link(ptr) {}
 };
 
+// MyQueue类的定义
 template <typename Type>
 class MyQueue 
 {
@@ -30,12 +44,14 @@ public:
 	bool getHead(Type& item);
 };
 
+// 判断队列是否为空
 template <typename Type>
 bool MyQueue<Type>::isEmpty() const 
 {
 	return front == nullptr;
 }
 
+// 将队列设置为空
 template <typename Type>
 void MyQueue<Type>::makeEmpty() 
 {
@@ -49,12 +65,14 @@ void MyQueue<Type>::makeEmpty()
 	count = 0;
 }
 
+// 获取当前队列内的节点数
 template <typename Type>
 int MyQueue<Type>::Size() const 
 {
 	return count;
 }
 
+// 从最后将节点加入队列内
 template <typename Type>
 void MyQueue<Type>::enQueue(const Type& item) 
 {
@@ -73,6 +91,7 @@ void MyQueue<Type>::enQueue(const Type& item)
 	count++;
 }
 
+// 从最前面将节点移出队列
 template <typename Type>
 bool MyQueue<Type>::deQueue(Type& item) 
 {
@@ -90,6 +109,7 @@ bool MyQueue<Type>::deQueue(Type& item)
 	return true;
 }
 
+// 获取队列的头节点
 template <typename Type>
 bool MyQueue<Type>::getHead(Type& item) 
 {
@@ -100,9 +120,7 @@ bool MyQueue<Type>::getHead(Type& item)
 	return true;
 }
 
-const int PROCESSSPEED_A = 2;
-const int PROCESSSPEED_B = 1;
-
+// Bank类的定义
 class Bank 
 {
 private:
@@ -116,6 +134,7 @@ public:
 	bool receiveCommand();
 };
 
+// 输入一个指定范围大小的整数
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt) 
 {
 	std::cout << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]：";
@@ -135,13 +154,16 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 	}
 }
 
+// 通过读取输入进行排队
 void Bank::lineUp() 
 {
+	// 输入顾客人数
 	std::cout << std::endl;
 	int count = inputInteger(1, 1000, "顾客人数");
 
+	// 顾客编号输入提示
 	std::cout << "请依次输入顾客编号(正整数):";
-
+	// 依次输入
 	for (int i = 0; i < count; i++) {
 
 		unsigned int customerNum;
@@ -158,18 +180,17 @@ void Bank::lineUp()
 		else {
 			queueB.enQueue(customerNum);
 		}
-
 	}
-
+	// 及时清除缓冲区
 	std::cin.clear();
 	std::cin.ignore(INT_MAX, '\n');
-
 }
 
+// 根据两个窗口处理速度不同输出顾客完成业务的顺序
 void Bank::dealWith() 
 {
+	// 处理开始提示
 	std::cout << std::endl << ">>> 开始处理顾客队列..." << std::endl;
-
 	std::cout << std::endl << ">>> ";
 
 	while (!queueA.isEmpty() || !queueB.isEmpty()) {
@@ -202,15 +223,15 @@ void Bank::dealWith()
 			}
 		}
 	}
-
+	// 业务处理结束提示
 	std::cout << std::endl << ">>> 已处理完毕，当前没有顾客排队。" << std::endl;
-
 }
 
+// 用户输入判断是否要服务下一篇顾客
 bool Bank::receiveCommand() 
 {
 	char command;
-
+	// 输入提示
 	std::cout << std::endl << ">>> 是否继续服务下一批顾客？(Y/N):";
 
 	while (true) {
@@ -219,28 +240,28 @@ bool Bank::receiveCommand()
 			command = _getch();
 		}
 		else if (command == 'y' || command == 'Y' || command == 'n' || command == 'N') {
-			std::cout << "[" << command << "]" << std::endl << std::endl;
+			std::cout << "[" << command << "]" << std::endl;
 			break;
 		}
 	}
-	
+	// 返回值
 	return (command == 'Y' || command == 'y');
-
 }
 
 int main()
 {
+	// 程序开始提示
 	std::cout << std::endl << ">>> 欢迎进入银行排队系统!" << std::endl;
-
+	// 初始化bank实例
 	Bank bank;
 
+	// 进行排队和业务处理操作
 	do {
 		bank.lineUp();
 		bank.dealWith();
 	} while (bank.receiveCommand());
 
+	// 程序结束提示
 	std::cout << std::endl << ">>> 银行排队系统结束，感谢使用!" << std::endl;
-
 	return 0;
-
 }

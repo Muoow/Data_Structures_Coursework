@@ -1,8 +1,18 @@
+/****************************************************************
+ * Project Name:  Comparison_of_Sorting_Algorithms
+ * File Name:     Comparison_of_Sorting_Algorithms.cpp
+ * File Function: 排序算法比较的实现
+ * Author:        张翔
+ * Update Date:   2024/12/7
+ ****************************************************************/
+
 #include<iostream>
 #include<random>
 #include<conio.h>
-#include<ctime>
+// 实现更精确的时间计算
+#include <chrono>
 
+// 定义常变量
 const char Algorithm[8][35]
 {
 "冒泡排序 Bubble Sort",
@@ -15,22 +25,27 @@ const char Algorithm[8][35]
 "基数排序 Radix Sort"
 };
 
+// 排序算法类的设计
 template<typename Type>
 class SortAlgorithm {
 private:
-
+	// 要排序的数组
 	Type* arr;
 	int numCount;
+	// 比较次数
 	int compareCount;
-
 public:
-
+	// 构造函数和析构函数
 	SortAlgorithm(int num);
 	~SortAlgorithm();
 
+	// 输入需要排序的数组
 	void inputArr(Type _arr[]);
+
+	// 选择排序算法
 	bool inputOptn();
 
+	// 实现排序算法
 	void bubbleSort();
 	void selectionSort();
 	void insertionSort();
@@ -46,6 +61,7 @@ public:
 	void radixSort();
 };
 
+// 构造函数
 template<typename Type>
 SortAlgorithm<Type>::SortAlgorithm(int num) {
 	numCount = num;
@@ -57,11 +73,13 @@ SortAlgorithm<Type>::SortAlgorithm(int num) {
 	}
 }
 
+// 析构函数
 template<typename Type>
 SortAlgorithm<Type>::~SortAlgorithm() {
 	delete[]arr;
 }
 
+// 数组输入
 template<typename Type>
 void SortAlgorithm<Type>::inputArr(Type _arr[]) {
 	for (int i = 0; i < numCount; i++) {
@@ -69,6 +87,7 @@ void SortAlgorithm<Type>::inputArr(Type _arr[]) {
 	}
 }
 
+// 实现简单的交换功能
 template <typename Type>
 void mySwap(Type& a, Type& b){
 	Type tmp = a;
@@ -76,26 +95,29 @@ void mySwap(Type& a, Type& b){
 	b = tmp;
 }
 
+// 进行排序算法的选择
 template<typename Type>
 bool SortAlgorithm<Type>::inputOptn() {
-
+	// 输入提示
 	std::cout << std::endl << ">>> 请选择排序算法: ";
 	char option;
-	
 	while (true) {
 		option = _getch();
 		if (option == 0 || option == -32) {
 			option = _getch();
 		}
-		else if (option >= '1' || option <= '9') {
+		else if (option >= '1' && option <= '9') {
 			std::cout << "[" << option << "]" << std::endl << std::endl;
 			break;
 		}
 	}
 
+	// 清零比较次数
 	compareCount = 0;
-	std::time_t start = std::time(nullptr);
+	// 开始记录时间
+	auto start = std::chrono::high_resolution_clock::now();
 
+	// 根据选项执行相应的排序算法
 	if (option == '1')
 		bubbleSort();
 	else if (option == '2')
@@ -115,17 +137,22 @@ bool SortAlgorithm<Type>::inputOptn() {
 	else if (option == '9')
 		return false;
 
-	std::time_t end = std::time(nullptr);
-	double elapsedtime = double(end - start) / CLOCKS_PER_SEC;
+	// 结束计时
+	auto end = std::chrono::high_resolution_clock::now(); 
+	// 计算耗时
+	std::chrono::duration<double> elapsed = end - start; 
+
+	// 排序算法性能分析
 	int alg = option - '0' - 1;
-	if (alg >= 0 || alg <= 9) {
-		std::cout << Algorithm[alg] << "所用时间: " << elapsedtime << std::endl;
-		std::cout << Algorithm[alg] << "交换次数: " << compareCount << std::endl << std::endl;
+	if (alg >= 0 || alg <= 8) {
+		std::cout << Algorithm[alg] << "所用时间: " << elapsed.count() << " 秒" << std::endl;
+		std::cout << Algorithm[alg] << "交换次数: " << compareCount << std::endl;
 	}
 
 	return true;
 }
 
+// 冒泡排序函数实现
 template<typename Type>
 void SortAlgorithm<Type>::bubbleSort() {
 	for (int i = 0; i < numCount - 1; i++) {
@@ -137,6 +164,7 @@ void SortAlgorithm<Type>::bubbleSort() {
 	}
 }
 
+// 选择排序函数实现
 template<typename Type>
 void SortAlgorithm<Type>::selectionSort() {
 	for (int i = 0; i < numCount - 1; i++) {
@@ -150,6 +178,7 @@ void SortAlgorithm<Type>::selectionSort() {
 	}
 }
 
+// 插入排序函数实现
 template<typename Type>
 void SortAlgorithm<Type>::insertionSort() {
 	for (int i = 1; i < numCount; i++) {
@@ -163,6 +192,7 @@ void SortAlgorithm<Type>::insertionSort() {
 	}
 }
 
+// 希尔排序函数实现
 template<typename Type>
 void SortAlgorithm<Type>::shellSort() {
 	for (int gap = numCount / 2; gap > 0; gap /= 2) {
@@ -178,6 +208,7 @@ void SortAlgorithm<Type>::shellSort() {
 	}
 }
 
+// 快速排序函数实现
 template<typename Type>
 int SortAlgorithm<Type>::partition(int low, int high) {
 	int pivot = arr[high];
@@ -200,6 +231,7 @@ void SortAlgorithm<Type>::quickSort(int low, int high) {
 	}
 }
 
+// 堆排序函数实现
 template<typename Type>
 void SortAlgorithm<Type>::heapify(int n, int i) {
 	int largest = i;
@@ -228,6 +260,7 @@ void SortAlgorithm<Type>::heapSort() {
 	}
 }
 
+// 归并排序函数实现
 template<typename Type>
 void SortAlgorithm<Type>::merge(int left, int mid, int right) {
 	int n1 = mid - left + 1, n2 = right - mid, i = 0, j = 0, k = left;
@@ -274,6 +307,7 @@ void SortAlgorithm<Type>::mergeSort(int left, int right) {
 	}
 }
 
+// 基数排序函数实现
 template<typename Type>
 Type SortAlgorithm<Type>::getMaxVal() {
 	Type maxVal = arr[0];
@@ -312,6 +346,7 @@ void SortAlgorithm<Type>::radixSort() {
 	}
 }
 
+// 输入某个范围内的一个整数
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
 	std::cout << std::endl;
 	std::cout << ">>>" << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]: ";
@@ -331,10 +366,12 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
 	}
 }
 
-int main(){
-
+int main()
+{
+	// 设置随机数种子
 	srand((unsigned int)time(0));
 
+	// 排序算法比较的菜单
 	std::cout << "+------------------------------------+" << std::endl;
 	std::cout << "|            排序算法比较            |" << std::endl;
 	std::cout << "|  Comparison of Sorting Algorithms  |" << std::endl;
@@ -350,21 +387,26 @@ int main(){
 	std::cout << "|          [9] --- 退出程序          |" << std::endl;
 	std::cout << "+------------------------------------+" << std::endl;
 
+	// 输入随机数的数量
 	int num = inputInteger(1, INT_MAX, "要生成随机数的个数");
 	int* _arr = new(std::nothrow) int[num];
 	if (_arr == nullptr) {
 		std::cerr << "Error: Memory allocation failed." << std::endl;
 		exit(-1);
 	}
+	// 生成随机数
 	for (int i = 0; i < num; i++) {
 		_arr[i] = rand();
 	}
 	SortAlgorithm<int> sort(num);
 	sort.inputArr(_arr);
+	// 生成成功提示
 	std::cout << std::endl << ">>> 随机数生成成功 (生成数量:" << num << ")" << std::endl;
 
+	// 进入算法选择函数
 	while (sort.inputOptn()) { sort.inputArr(_arr); }
 
+	// 系统结束提示
 	std::cout << std::endl << ">>> 排序算法比较结束" << std::endl;
 	delete[]_arr;
 	return 0;
