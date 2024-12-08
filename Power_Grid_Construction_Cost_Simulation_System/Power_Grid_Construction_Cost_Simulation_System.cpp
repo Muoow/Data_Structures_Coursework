@@ -1,10 +1,20 @@
+/****************************************************************
+ * Project Name:  Power_Grid_Construction_Cost_Simulation_System
+ * File Name:     Power_Grid_Construction_Cost_Simulation_Systems.cpp
+ * File Function: 电网造价系统的实现
+ * Author:        张翔
+ * Update Date:   2024/12/8
+ ****************************************************************/
+
 #include<iostream>
 #include<limits>
 #include<conio.h>
 
+// 常变量的定义
 const int MAX_VERTICES = 26;
 const int MAX_EDGES = MAX_VERTICES * (MAX_VERTICES - 1);
 
+// 图的边结构体定义
 struct Edge 
 {
 	bool exist;
@@ -25,6 +35,7 @@ private:
 	int* mstParent;
 	bool mstComputed;
 public:
+	// 无向图的基本操作
 	MyUndirectedGraph(int _maxVertices);
 	~MyUndirectedGraph();
 	int getVertexCount() { return vertexCount; }
@@ -32,6 +43,7 @@ public:
 	bool addVertex(const Type& vertex);
 	bool addEdge(const Type& vertexA, const Type& vertexB, int weight);
 	bool findEdge(const Type& vertexA, const Type& vertexB);
+	// 最小生成树
 	bool isComputed() { return mstComputed; }
 	void primMST(const Type& vertex);
 	void printMST();
@@ -318,6 +330,12 @@ void PowerGrid::createGridVertices()
 void PowerGrid::createGridEdges() 
 {
 	int numVertices = grid.getVertexCount();
+
+	if (numVertices == 0) {
+		std::cerr << "请先添加节点！" << std::endl << std::endl;
+		return;
+	}
+
 	int numEdges = inputInteger(1, numVertices * (numVertices - 1) / 2, "要添加的边数量");
 
 	for (int i = 0; i < numEdges; i++) {
@@ -339,6 +357,11 @@ void PowerGrid::createGridEdges()
 
 void PowerGrid::constructMinimumSpanningTree() 
 {
+	if (grid.getVertexCount() == 0) {
+		std::cerr << "请先添加节点！" << std::endl << std::endl;
+		return;
+	}
+
 	char startVertex;
 	std::cout << "请输入构造最小生成树的起始节点: ";
 	std::cin >> startVertex;

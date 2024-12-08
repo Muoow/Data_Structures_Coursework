@@ -1,7 +1,19 @@
+/****************************************************************
+ * Project Name:  Key_Activities
+ * File Name:     Key_Activities.cpp
+ * File Function: 关键活动的实现
+ * Author:        张翔
+ * Update Date:   2024/12/8
+ ****************************************************************/
+
 #include <iostream>
 #include <conio.h>
 #include <climits>
 #include <iomanip>
+
+// 常变量的定义
+const int MAX_TASK_HANDOVER = 10;
+const int MAX_TASK = MAX_TASK_HANDOVER * (MAX_TASK_HANDOVER - 1);
 
 struct Edge
 {
@@ -20,6 +32,7 @@ private:
 	Edge** graph;
 	int findVertexIndex(const Type& vertex) const;
 public:
+	// 基础功能
 	MyDirectedGraph(int _maxVertices);
 	~MyDirectedGraph();
 	int getVertexCount() { return vertexCount; }
@@ -27,6 +40,7 @@ public:
 	bool addVertex(const Type& vertex);
 	bool addEdge(const Type& vertexA, const Type& vertexB, int weight);
 	bool findEdge(const Type& vertexA, const Type& vertexB);
+	// 关键活动
 	bool topologicalSort(); 
 	void printCriticalActivities(); 
 };
@@ -248,10 +262,6 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 	}
 }
 
-const int MAX_TASK_HANDOVER = 10;
-const int MAX_TASK = MAX_TASK_HANDOVER * (MAX_TASK_HANDOVER - 1);
-
-
 int main()
 {
 	/* 系统进入提示语 */
@@ -293,5 +303,6 @@ int main()
 		graph.printCriticalActivities();
 	}
 
+	// 退出程序
 	return 0;
 }

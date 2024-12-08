@@ -1,11 +1,21 @@
+/****************************************************************
+ * Project Name:  Convert_Infix_Expression_to_Postfix
+ * File Name:     Convert_Infix_Expression_to_Postfix.cpp
+ * File Function: 表达式转换的实现
+ * Author:        张翔
+ * Update Date:   2024/12/8
+ ****************************************************************/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<new>
 #include<sstream>
 
+// 常变量的定义
 const int MAX_LENGTH = 256;
 const int MAX_TOKEN = 10;
 
+// 链表节点的定义
 template <typename Type>
 struct MyLinkNode
 {
@@ -15,6 +25,7 @@ struct MyLinkNode
 	MyLinkNode(const Type& item, MyLinkNode<Type>* ptr = nullptr) : data(item), link(ptr) {}
 };
 
+// 队列的定义
 template <typename Type>
 class MyQueue 
 {
@@ -103,6 +114,7 @@ bool MyQueue<Type>::getHead(Type& item)
 	return true;
 }
 
+// 栈的定义
 template <typename Type>
 class MyStack 
 {
@@ -185,16 +197,13 @@ bool MyStack<Type>::getTop(Type& item)
 	return true;
 }
 
+// 判断当前字符是否是运算符
 bool isOperator(const char& c) 
 {
 	return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-bool isNum(const char& n) 
-{
-	return n >= '0' && n <= '9';
-}
-
+// 运算符优先级判断
 int precedence(const char* op)
 {
 	if (std::strcmp(op, "+") == 0 || std::strcmp(op, "-") == 0) {
@@ -206,6 +215,7 @@ int precedence(const char* op)
 	return 0;
 }
 
+// 应用运算符进行计算
 int applyOp(int a, int b, char op) 
 {
 	switch (op) {
@@ -221,12 +231,14 @@ int applyOp(int a, int b, char op)
 	return 0;
 }
 
+// 运算式中元素结构体的定义
 struct Token 
 {
 	char value[MAX_TOKEN];
 	bool isNumber;
 };
 
+// 算术表达式的定义
 class MyExpression 
 {
 private:
@@ -237,23 +249,35 @@ public:
 	MyExpression();
 	bool inputExpression();
 	void infixToPostfix();
+	void outputExpression();
 };
 
+// 构造函数，实现输入表达式
 MyExpression::MyExpression() 
 {
 	while (!inputExpression())
-		std::cout << "表达式输入的格式有误！" << std::endl;
+		std::cout << std::endl << ">>> 表达式输入的格式有误！" << std::endl << std::endl;
 }
 
+// 输出中缀表达式
+void MyExpression::outputExpression()
+{
+	std::cout << std::endl << ">>> 中缀表达式为: ";
+	std::cout << expression << std::endl;
+}
+
+// 输入表达式并对表达式的格式进行检查
 bool MyExpression::inputExpression() 
 {
-	std::cout << "请输入一个算术表达式 (在每个运算数/运算符之间用空格隔开)" << std::endl;
+	std::cout << ">>> 请输入一个算术表达式 (在每个运算数/运算符之间用空格隔开)" << std::endl << std::endl;
 	std::cin.getline(expression, sizeof(expression));
 	size_t len = std::strlen(expression);
-	if ((isOperator(expression[0]) || expression[0] == ')') ||
+	// 对表达式的开头和结尾进行检查
+	if ((expression[0] == '*' || expression[0] == '/' || expression[0] == ')') ||
 		(isOperator(expression[len - 1]) || expression[len - 1] == '(')) {
 		return false;
 	}
+	// 检查整个算术表达式括号的平衡性
 	int openParentheses = 0;
 	for (size_t i = 0; i < len;) {
 		char element = expression[i];
@@ -265,22 +289,38 @@ bool MyExpression::inputExpression()
 		while (expression[i + j] == ' ') {
 			j++;
 		}
+		// 对于运算符
 		if (isOperator(element)) {
 			if (isOperator(expression[i + j]) || expression[i + j] == ')') {
 				return false;
 			}
 		}
-		else if (std::isdigit(element)) {
+		// 对于数字
+		else if (std::isdigit(element) || (element == '-' && std::isdigit(expression[i + 1]))) {
+			// 标记是否已经遇到小数点
+			bool hasDecimalPoint = false;  
+			while (std::isdigit(expression[i + j]) || expression[i + j] == '.') {
+				if (expression[i + j] == '.') {
+					// 如果已经有一个小数点，非法
+					if (hasDecimalPoint) {  
+						return false;
+					}
+					hasDecimalPoint = true;
+				}
+				j++;
+			}
 			if (expression[i + j] == '(') {
 				return false;
 			}
 		}
+		// 对于前括号
 		else if (element == '(') {
 			openParentheses++;
 			if (expression[i + j] == ')') {
 				return false;
 			}
 		}
+		// 对于后括号
 		else if (element == ')') {
 			openParentheses--;
 			if (expression[i + j] == '(') {
@@ -295,15 +335,18 @@ bool MyExpression::inputExpression()
 	return openParentheses == 0;
 }
 
+// 中缀表达式转后缀
 void MyExpression::infixToPostfix()
 {
+	// 将中缀表达式做成输入流
 	std::istringstream stream(expression);
 	char token[MAX_TOKEN];
 
 	while (stream >> token) {
 		Token t;
 		/* 数字处理 */
-		if (std::isdigit(token[0]) || (token[0] == '-' && std::isdigit(token[1]))) {
+		if (std::isdigit(token[0]) || 
+			((token[0] == '-' || token[0] == '+') && std::isdigit(token[1]))) {
 			std::strcpy(t.value, token);
 			t.isNumber = true;
 			q1.enqueue(t);
@@ -362,6 +405,7 @@ void MyExpression::infixToPostfix()
 		q1.enqueue(t);
 	}
 
+	std::cout << std::endl << ">>> 后缀表达式为: ";
 	/* 输出后缀表达式 */ 
 	while (!q1.isEmpty()) {
 		Token t;
@@ -378,6 +422,9 @@ int main()
 {
 	// 初始化算术表达式
 	MyExpression infix;
+
+	// 输出读入的中缀表达式
+	infix.outputExpression();
 
 	// 算术表达式中缀转后缀
 	infix.infixToPostfix();

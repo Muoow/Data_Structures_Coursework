@@ -1,8 +1,17 @@
+/****************************************************************
+ * Project Name:  Repair_the_Ranch
+ * File Name:     Repair_the_Ranch.cpp
+ * File Function: 修复牧场
+ * Author:        张翔
+ * Update Date:   2024/12/8
+ ****************************************************************/
+
 #include<iostream>
 #include<new>
 
 template<typename Type>
-class MyPriorityQueue {
+class MyPriorityQueue
+{
 private:
 	Type* elements;
 	int maxsize;
@@ -21,8 +30,8 @@ public:
 };
 
 template<typename Type>
-void MyPriorityQueue<Type>::heapifyUp(int index) {
-
+void MyPriorityQueue<Type>::heapifyUp(int index) 
+{
 	while (index > 0) {
 
 		int parent = (index - 1) / 2;
@@ -42,7 +51,8 @@ void MyPriorityQueue<Type>::heapifyUp(int index) {
 }
 
 template<typename Type>
-void MyPriorityQueue<Type>::heapifyDown(int index) {
+void MyPriorityQueue<Type>::heapifyDown(int index) 
+{
 	while (true) {
 
 		int least = index;
@@ -72,7 +82,8 @@ void MyPriorityQueue<Type>::heapifyDown(int index) {
 }
 
 template<typename Type>
-MyPriorityQueue<Type>::MyPriorityQueue(int _maxsize){
+MyPriorityQueue<Type>::MyPriorityQueue(int _maxsize)
+{
 	maxsize = _maxsize;
 	currsize = 0;
 	elements = new (nothrow) Type[maxsize];
@@ -83,7 +94,8 @@ MyPriorityQueue<Type>::MyPriorityQueue(int _maxsize){
 }
 
 template<typename Type>
-bool MyPriorityQueue<Type>::insert(const Type& item) {
+bool MyPriorityQueue<Type>::insert(const Type& item) 
+{
 	if (isFull())
 		return false;
 	else {
@@ -94,7 +106,8 @@ bool MyPriorityQueue<Type>::insert(const Type& item) {
 }
 
 template<typename Type>
-bool MyPriorityQueue<Type>::remove(Type& item) {
+bool MyPriorityQueue<Type>::remove(Type& item)
+{
 	if (isEmpty())
 		return false;
 	else {
@@ -106,7 +119,8 @@ bool MyPriorityQueue<Type>::remove(Type& item) {
 }
 
 template<typename Type>
-bool MyPriorityQueue<Type>::getFront(Type& item) const {
+bool MyPriorityQueue<Type>::getFront(Type& item) const
+{
 	if (isEmpty())
 		return false;
 	else {
@@ -115,7 +129,8 @@ bool MyPriorityQueue<Type>::getFront(Type& item) const {
 	}
 }
 
-int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
+int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
+{
 	std::cout << ">>> " << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]: ";
 	int input;
 	while (true) {
@@ -133,7 +148,8 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt) {
 	}
 }
 
-int main() {
+int main()
+{
 	int num = inputInteger(1, INT_MAX, "请输入要将木头切成的块数: ");
 	MyPriorityQueue<int> pq(num);
 	int totalCost;

@@ -9,8 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Intersection_of_two_ordered
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maze_Game", "Maze_Game\Maze_Game.vcxproj", "{632C998B-BB04-4902-9CD3-C429BDEDD5A3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TEST", "TEST\TEST.vcxproj", "{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Convert_Infix_Expression_to_Postfix", "Convert_Infix_Expression_to_Postfix\Convert_Infix_Expression_to_Postfix.vcxproj", "{52A085FA-E6E3-4E21-BD5E-B5E36F43BFB3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Banking", "Banking\Banking.vcxproj", "{BFBE3620-A38C-4907-A579-98E17207C7CF}"
@@ -57,14 +55,6 @@ Global
 		{632C998B-BB04-4902-9CD3-C429BDEDD5A3}.Release|x64.Build.0 = Release|x64
 		{632C998B-BB04-4902-9CD3-C429BDEDD5A3}.Release|x86.ActiveCfg = Release|Win32
 		{632C998B-BB04-4902-9CD3-C429BDEDD5A3}.Release|x86.Build.0 = Release|Win32
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Debug|x64.ActiveCfg = Debug|x64
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Debug|x64.Build.0 = Debug|x64
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Debug|x86.ActiveCfg = Debug|Win32
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Debug|x86.Build.0 = Debug|Win32
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Release|x64.ActiveCfg = Release|x64
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Release|x64.Build.0 = Release|x64
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Release|x86.ActiveCfg = Release|Win32
-		{17FFEEC5-98E2-4DE0-9633-90FE1EE7F715}.Release|x86.Build.0 = Release|Win32
 		{52A085FA-E6E3-4E21-BD5E-B5E36F43BFB3}.Debug|x64.ActiveCfg = Debug|x64
 		{52A085FA-E6E3-4E21-BD5E-B5E36F43BFB3}.Debug|x64.Build.0 = Debug|x64
 		{52A085FA-E6E3-4E21-BD5E-B5E36F43BFB3}.Debug|x86.ActiveCfg = Debug|Win32

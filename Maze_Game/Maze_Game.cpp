@@ -1,9 +1,18 @@
-﻿#include <iostream>
+﻿/****************************************************************
+ * Project Name:  Maze_Game
+ * File Name:     Maze_Game.cpp
+ * File Function: 勇闯迷宫游戏
+ * Author:        张翔
+ * Update Date:   2024/12/8
+ ****************************************************************/
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+
 using namespace std;
 
+// 常变量的定义
 const int MIN_ROWCOL = 1;
 const int MAX_ROWCOL = 99;
 const int START_ROW = 1;
