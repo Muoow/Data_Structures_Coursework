@@ -1,3 +1,11 @@
+/****************************************************************
+ * Project Name:  Exam_Registration_System
+ * File Name:     Exam_Registration_System.cpp
+ * File Function: 家谱管理系统的实现
+ * Author:        张翔
+ * Update Date:   2024/12/8
+ ****************************************************************/
+
 #include <iostream>
 #include <iomanip>
 #include <conio.h>

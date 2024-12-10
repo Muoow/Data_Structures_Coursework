@@ -15,18 +15,23 @@
 const int MAX_TASK_HANDOVER = 10;
 const int MAX_TASK = MAX_TASK_HANDOVER * (MAX_TASK_HANDOVER - 1);
 
+// 边结构体的定义
 struct Edge
 {
 	bool exist;
 	int weight;
 };
 
+// 有向图的定义
 template <typename Type>
 class MyDirectedGraph
 {
 private:
+	// 最大节点树
 	int maxVertices;
+	// 当前节点数量
 	int vertexCount;
+	// 当前边的数量
 	int edgeCount;
 	Type* vertices;
 	Edge** graph;
@@ -45,6 +50,7 @@ public:
 	void printCriticalActivities(); 
 };
 
+// 寻找节点的编号
 template <typename Type>
 int MyDirectedGraph<Type>::findVertexIndex(const Type& vertex) const
 {
@@ -56,6 +62,7 @@ int MyDirectedGraph<Type>::findVertexIndex(const Type& vertex) const
 	return -1;
 }
 
+// 有向图的构造函数
 template <typename Type>
 MyDirectedGraph<Type>::MyDirectedGraph(int _maxVertices)
 	:maxVertices(_maxVertices), vertexCount(0), edgeCount(0)
@@ -83,6 +90,7 @@ MyDirectedGraph<Type>::MyDirectedGraph(int _maxVertices)
 	}
 }
 
+// 析构函数
 template <typename Type>
 MyDirectedGraph<Type>::~MyDirectedGraph()
 {
@@ -93,6 +101,7 @@ MyDirectedGraph<Type>::~MyDirectedGraph()
 	delete[] graph;
 }
 
+// 添加节点
 template <typename Type>
 bool MyDirectedGraph<Type>::addVertex(const Type& vertex)
 {
@@ -107,6 +116,7 @@ bool MyDirectedGraph<Type>::addVertex(const Type& vertex)
 	return true;
 }
 
+// 添加边
 template <typename Type>
 bool MyDirectedGraph<Type>::addEdge(const Type& from, const Type& to, int weight)
 {
@@ -123,6 +133,7 @@ bool MyDirectedGraph<Type>::addEdge(const Type& from, const Type& to, int weight
 	return true;
 }
 
+// 查找对应的边是否存在
 template <typename Type>
 bool MyDirectedGraph<Type>::findEdge(const Type& from, const Type& to)
 {
@@ -137,6 +148,7 @@ bool MyDirectedGraph<Type>::findEdge(const Type& from, const Type& to)
 	return true;
 }
 
+// 拓扑排序的实现
 template <typename Type>
 bool MyDirectedGraph<Type>::topologicalSort()
 {
@@ -192,6 +204,7 @@ bool MyDirectedGraph<Type>::topologicalSort()
 	return true;
 }
 
+// 找出关键活动
 template <typename Type>
 void MyDirectedGraph<Type>::printCriticalActivities()
 {
@@ -242,6 +255,7 @@ void MyDirectedGraph<Type>::printCriticalActivities()
 	delete[] latestStart;
 }
 
+// 输入一个指定范围内的整数
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 {
 	std::cout << ">>> " << "请输入" << prompt << " 整数范围: [" << lowerLimit << "~" << upperLimit << "]: ";
@@ -276,10 +290,12 @@ int main()
 	for (int i = 1; i <= N; i++)
 		graph.addVertex(i);
 
+	// 输入格式的具体声明
 	std::cout << ">>> 请输入每个任务的交接点及任务所需时长(请按照顺序输入): " << std::endl;
 	std::cout << ">>> 对于每个任务，请输入两个交接点的编号（从1开始）以及该任务的时长" << std::endl;
 	std::cout << ">>> 例如，输入“1 2 5”表示任务从交接点1到交接点2，任务所需时长为5单位" << std::endl << std::endl;
 
+	// 输入每个任务
 	for (int i = 0; i < M; i++) {
 		int from, to, weight;
 		std::cout << "任务" << std::setw(3) << i + 1 << ": ";
@@ -295,6 +311,7 @@ int main()
 	std::cout << std::endl;
 	std::cout << ">>> 正在进行拓扑排序..." << std::endl;
 
+	// 判断是否能完成拓扑排序
 	if (!graph.topologicalSort()) {
 		std::cout << ">>> 无法完成拓扑排序: 存在环路，无法完成任务调度 " << std::endl;
 	}

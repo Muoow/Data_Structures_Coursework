@@ -9,6 +9,7 @@
 #include<iostream>
 #include<new>
 
+// 优先队列的定义
 template<typename Type>
 class MyPriorityQueue
 {
@@ -22,13 +23,14 @@ public:
 	MyPriorityQueue(int _maxsize);
 	~MyPriorityQueue() { delete[]elements; }
 	bool isEmpty(void) const { return currsize == 0; }
-	bool isFull(void) const { return currsize == maxSize; }
+	bool isFull(void) const { return currsize == maxsize; }
 	int getSize(void) const { return currsize; }
 	bool insert(const Type& item);
 	bool remove(Type& item);
 	bool getFront(Type& item) const;
 };
 
+// 上浮函数
 template<typename Type>
 void MyPriorityQueue<Type>::heapifyUp(int index) 
 {
@@ -50,6 +52,7 @@ void MyPriorityQueue<Type>::heapifyUp(int index)
 
 }
 
+// 下沉函数
 template<typename Type>
 void MyPriorityQueue<Type>::heapifyDown(int index) 
 {
@@ -81,18 +84,20 @@ void MyPriorityQueue<Type>::heapifyDown(int index)
 	}
 }
 
+// 优先队列的初始化
 template<typename Type>
 MyPriorityQueue<Type>::MyPriorityQueue(int _maxsize)
 {
 	maxsize = _maxsize;
 	currsize = 0;
-	elements = new (nothrow) Type[maxsize];
+	elements = new (std::nothrow) Type[maxsize];
 	if (elements == nullptr) {
 		std::cerr << "Error: Memory allocation failed." << std::endl;
 		exit(-1);
 	}
 }
 
+// 从队列尾部插入新节点
 template<typename Type>
 bool MyPriorityQueue<Type>::insert(const Type& item) 
 {
@@ -105,6 +110,7 @@ bool MyPriorityQueue<Type>::insert(const Type& item)
 	}
 }
 
+// 删去队列最前面的元素
 template<typename Type>
 bool MyPriorityQueue<Type>::remove(Type& item)
 {
@@ -118,6 +124,7 @@ bool MyPriorityQueue<Type>::remove(Type& item)
 	}
 }
 
+// 获取优先队列最前面的节点
 template<typename Type>
 bool MyPriorityQueue<Type>::getFront(Type& item) const
 {
@@ -129,6 +136,7 @@ bool MyPriorityQueue<Type>::getFront(Type& item) const
 	}
 }
 
+// 输入一个指定范围内的整数
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 {
 	std::cout << ">>> " << "请输入" << prompt << " 整数范围: " << lowerLimit << "~" << upperLimit << "]: ";
@@ -150,23 +158,32 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 
 int main()
 {
+	// 输入要切成的块数
 	int num = inputInteger(1, INT_MAX, "请输入要将木头切成的块数: ");
 	MyPriorityQueue<int> pq(num);
-	int totalCost;
-	std::cout << "请依次输入 " << num << " 段木头的长度: " << std::endl;
+	int totalCost = 0;
+
+	// 依次输入每段木头的长度
+	std::cout << std::endl << "请依次输入 " << num << " 段木头的长度: " ;
 	for (int i = 0; i < num; i++) {
 		int length;
 		std::cin >> length;
 		pq.insert(length);
 	}
+
+	// 找出最小成本 
 	while (pq.getSize() > 1) {
 		int first, second;
 		pq.remove(first);
 		pq.remove(second);
 		int cost = first + second;
 		pq.insert(cost);
+		totalCost += cost;
 	}
-	pq.getFront(totalCost);
-	std::cout << "最小切割成本为: " << totalCost<< std::endl;
+
+	// 输出最小成本
+	std::cout << std::endl << ">>> 最小切割成本为: " << totalCost << std::endl;
+
+	// 退出程序
 	return 0;
 }

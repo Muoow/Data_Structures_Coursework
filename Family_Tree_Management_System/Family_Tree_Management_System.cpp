@@ -38,9 +38,11 @@ public:
 	MyTreeNode<Type>* getLeftChild(MyTreeNode<Type>* current) { return current == nullptr ? nullptr : current->leftChild; }
 	MyTreeNode<Type>* getRightChild(MyTreeNode<Type>* current) { return current == nullptr ? nullptr : current->rightChild; }
 	MyTreeNode<Type>* findNode(const Type& item, MyTreeNode<Type>* subTree);
+	// 遍历方法
 	void preorder(MyTreeNode<Type>* node);
 	void inorder(MyTreeNode<Type>* node);
 	void postorder(MyTreeNode<Type>* node);
+	// 运算符重载
 	MyBinaryTree<Type>& operator=(const MyBinaryTree<Type>& other);
 	MyTreeNode<Type>* copyTree(MyTreeNode<Type>* subTree);
 };

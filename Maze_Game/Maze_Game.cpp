@@ -5,6 +5,7 @@
  * Author:        张翔
  * Update Date:   2024/12/8
  ****************************************************************/
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -27,37 +28,56 @@ struct MyLinkNode {
 	MyLinkNode(const Type& item, MyLinkNode<Type>* ptr = nullptr) : data(item), link(ptr) {}
 };
 
+// 队列的定义
 template <typename Type>
-class MyQueue {
+class MyQueue
+{
 private:
 	MyLinkNode<Type>* front;
 	MyLinkNode<Type>* rear;
+	int count;
 public:
-	MyQueue() : front(nullptr), rear(nullptr) {}
-	~MyQueue();
+	MyQueue() : front(nullptr), rear(nullptr), count(0) {}
+	~MyQueue() { makeEmpty(); }
 	bool isEmpty() const;
+	void makeEmpty();
+	int Size()const;
 	void enqueue(const Type& item);
 	bool dequeue(Type& item);
 	bool getHead(Type& item);
 };
 
 template <typename Type>
-MyQueue<Type>::~MyQueue() {
-	while (!isEmpty()) {
-
-	}
-}
-
-template <typename Type>
-bool MyQueue<Type>::isEmpty() const {
+bool MyQueue<Type>::isEmpty() const
+{
 	return front == nullptr;
 }
 
 template <typename Type>
-void MyQueue<Type>::enqueue(const Type& item) {
-	MyLinkNode<Type>* newNode = new(nothrow)MyLinkNode<Type>(item, nullptr);
+void MyQueue<Type>::makeEmpty()
+{
+	MyLinkNode<Type>* current;
+	while (front != nullptr) {
+		current = front;
+		front = front->link;
+		delete current;
+	}
+	rear = nullptr;
+	count = 0;
+}
+
+template <typename Type>
+int MyQueue<Type>::Size() const
+{
+	return count;
+}
+
+template <typename Type>
+void MyQueue<Type>::enqueue(const Type& item)
+{
+	MyLinkNode<Type>* newNode = new(std::nothrow)MyLinkNode<Type>(item, nullptr);
 	if (newNode == nullptr) {
-		cerr << "Error: Memory allocation failed." << endl;
+		std::cerr << "Error: Memory allocation failed." << std::endl;
 		exit(-1);
 	}
 	if (isEmpty()) {
@@ -67,10 +87,12 @@ void MyQueue<Type>::enqueue(const Type& item) {
 		rear->link = newNode;
 		rear = newNode;
 	}
+	count++;
 }
 
 template <typename Type>
-bool MyQueue<Type>::dequeue(Type& item) {
+bool MyQueue<Type>::dequeue(Type& item)
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -81,19 +103,23 @@ bool MyQueue<Type>::dequeue(Type& item) {
 	if (front == nullptr) {
 		rear = nullptr;
 	}
+	count--;
 	return true;
 }
 
 template <typename Type>
-bool MyQueue<Type>::getHead(Type& item) {
+bool MyQueue<Type>::getHead(Type& item)
+{
 	if (isEmpty()) {
 		return false;
 	}
-
+	item = front->data;
+	return true;
 }
 
 template <typename Type>
-class MyStack {
+class MyStack 
+{
 private:
 	MyLinkNode<Type>* topNode;
 	int count;
@@ -111,12 +137,14 @@ public:
 };
 
 template <typename Type>
-bool MyStack<Type>::isEmpty() const {
+bool MyStack<Type>::isEmpty() const 
+{
 	return topNode == nullptr;
 }
 
 template <typename Type>
-void MyStack<Type>::makeEmpty(){
+void MyStack<Type>::makeEmpty()
+{
 	MyLinkNode<Type>* current;
 	while (topNode != nullptr) {
 		current = topNode;
@@ -126,12 +154,14 @@ void MyStack<Type>::makeEmpty(){
 }
 
 template <typename Type>
-int MyStack<Type>::Size() const {
+int MyStack<Type>::Size() const 
+{
 	return count;
 }
 
 template <typename Type>
-bool MyStack<Type>::Push(Type& item) {
+bool MyStack<Type>::Push(Type& item)
+{
 	if (count >= max_size) {
 		return false;
 	}
@@ -145,7 +175,8 @@ bool MyStack<Type>::Push(Type& item) {
 }
 
 template <typename Type>
-bool MyStack<Type>::Pop(Type& item) {
+bool MyStack<Type>::Pop(Type& item) 
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -158,7 +189,8 @@ bool MyStack<Type>::Pop(Type& item) {
 }
 
 template <typename Type>
-bool MyStack<Type>::getTop(Type& item) {
+bool MyStack<Type>::getTop(Type& item) 
+{
 	if (isEmpty()) {
 		return false;
 	}
@@ -166,8 +198,10 @@ bool MyStack<Type>::getTop(Type& item) {
 	return true;
 }
 
-int inputOdd(int lowerLimit, int upperLimit, const char* prompt) {
-	cout << "请输入" << prompt << " [奇数范围: " << lowerLimit << "~" << upperLimit << "]：";
+// 输入一个指定范围内的奇数
+int inputOdd(int lowerLimit, int upperLimit, const char* prompt) 
+{
+	cout << ">>> 请输入" << prompt << " [奇数范围: " << lowerLimit << "~" << upperLimit << "]: ";
 	int input;
 	while (true) {
 		cin >> input;
@@ -182,9 +216,11 @@ int inputOdd(int lowerLimit, int upperLimit, const char* prompt) {
 			cin.ignore(INT_MAX, '\n');
 		}
 	}
+	std::cout << std::endl;
 }
 
-class Maze {
+class Maze 
+{
 private:
 	int rows;
 	int cols;
@@ -208,18 +244,21 @@ public:
 	void generateMaze(int row, int col);
 	void findAdjacentWalls();
 	void ouputMaze();
+	void clearPaths();
 	bool DFS();
-
+	bool BFS();
 };
 
-struct Maze::MazePoint {
+struct Maze::MazePoint 
+{
 	int row = 0;
 	int col = 0;
 	bool isWall = true;
 	bool isPath = false;
 };
 
-bool Maze::pushList(const MazePoint point) {
+bool Maze::pushList(const MazePoint point) 
+{
 	if (mazePointListCount >= rows * cols) {
 		return false;
 	}
@@ -228,7 +267,8 @@ bool Maze::pushList(const MazePoint point) {
 	return true;
 }
 
-bool Maze::popList(int index) {
+bool Maze::popList(int index)
+{
 	if (mazePointListCount == 0) {
 		return false;
 	}
@@ -242,7 +282,8 @@ bool Maze::popList(int index) {
 }
 
 Maze::Maze(int _rows, int _cols, int _startRow, int _startCol, int _targetRow, int _targetCol): 
-	rows(_rows), cols(_cols), startRow(_startRow), startCol(_startCol), targetRow(_targetRow), targetCol(_targetCol), maze(nullptr){
+	rows(_rows), cols(_cols), startRow(_startRow), startCol(_startCol), targetRow(_targetRow), targetCol(_targetCol), maze(nullptr)
+{
 	currRow = startRow;
 	currCol = startCol;
 	maze = new (nothrow)MazePoint * [rows];
@@ -269,18 +310,21 @@ Maze::Maze(int _rows, int _cols, int _startRow, int _startCol, int _targetRow, i
 	}
 }
 
-Maze::~Maze() {
+Maze::~Maze() 
+{
 	for (int i = 0; i < rows; i++) 
 		delete[] maze[i];
 	delete[] maze;
 	delete[] mazePointList;
 }
 
-bool Maze::isValid(int row, int col) const{
+bool Maze::isValid(int row, int col) const
+{
 	return row >= 0 && col >= 0 && row < rows && col < cols;
 }
 
-void Maze::generateMaze() {
+void Maze::generateMaze()
+{
 	maze[currRow][currCol].isWall = false;
 	findAdjacentWalls();
 	while (mazePointListCount != 0) {
@@ -305,7 +349,8 @@ void Maze::generateMaze() {
 	}
 }
 
-void Maze::findAdjacentWalls() {
+void Maze::findAdjacentWalls() 
+{
 	if (currRow > 1 && maze[currRow - 1][currCol].isWall)
 		pushList(maze[currRow - 1][currCol]);
 	if (currRow < rows - 2 && maze[currRow + 1][currCol].isWall)
@@ -316,7 +361,8 @@ void Maze::findAdjacentWalls() {
 		pushList(maze[currRow][currCol + 1]);
 }
 
-void Maze::generateMaze(int row, int col) {
+void Maze::generateMaze(int row, int col) 
+{
 	Direction directions[4] = { Up,Down,Left,Right };
 	for (int i = 0; i < 4; i++) {
 		int r = rand() % 4;
@@ -349,7 +395,8 @@ void Maze::generateMaze(int row, int col) {
 	}
 }
 
-void Maze::ouputMaze() {
+void Maze::ouputMaze()
+{
 	cout << endl;
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
@@ -364,12 +411,25 @@ void Maze::ouputMaze() {
 	}
 }
 
-typedef struct {
+void Maze::clearPaths()
+{
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			maze[i][j].isPath = false;
+		}
+	}
+}
+
+// 坐标结构体定义
+typedef struct 
+{
 	int row;
 	int col;
 } Coordinate;
 
-bool Maze::DFS() {
+// 深度优先算法
+bool Maze::DFS() 
+{
 	bool** visit = new (nothrow)bool* [rows];
 	if (visit == nullptr) {
 		cerr << "Error: Memory allocation failed." << endl;
@@ -443,18 +503,123 @@ bool Maze::DFS() {
 	return false;
 }
 
-void mazeGame() {
-	int _rows = inputOdd(MIN_ROWCOL, MAX_ROWCOL, "行数");
-	int _cols = inputOdd(MIN_ROWCOL, MAX_ROWCOL, "列数");
-	Maze maze(_rows, _cols, START_ROW, START_COL, _rows - 2, _cols - 2);
-	maze.generateMaze(START_ROW, START_COL);
-	maze.ouputMaze();
-	maze.DFS();
+// 广度优先算法
+bool Maze::BFS()
+{
+	// 初始化访问矩阵和父节点矩阵
+	bool** visit = new (std::nothrow) bool* [rows];
+	Coordinate** parent = new (std::nothrow) Coordinate * [rows];
+	if (visit == nullptr || parent == nullptr) {
+		cerr << "Error: Memory allocation failed." << endl;
+		exit(-1);
+	}
+	for (int i = 0; i < rows; i++) {
+		visit[i] = new (std::nothrow) bool[cols];
+		parent[i] = new (std::nothrow) Coordinate[cols];
+		if (visit[i] == nullptr || parent[i] == nullptr) {
+			cerr << "Error: Memory allocation failed." << endl;
+			exit(-1);
+		}
+		for (int j = 0; j < cols; j++) {
+			visit[i][j] = false;
+			parent[i][j] = { -1, -1 }; // 初始化父节点为无效坐标
+		}
+	}
+
+	// 使用自定义队列初始化和路径记录
+	MyQueue<Coordinate> BFS_Queue;
+	Coordinate start{ startRow, startCol };
+	BFS_Queue.enqueue(start);
+	visit[startRow][startCol] = true;
+
+	while (!BFS_Queue.isEmpty()) {
+		Coordinate current;
+		BFS_Queue.dequeue(current);
+
+		// 判断是否到达目标位置
+		if (current.row == targetRow && current.col == targetCol) {
+			// 重建路径
+			Coordinate pathPoint = current;
+			while (pathPoint.row != startRow || pathPoint.col != startCol) {
+				maze[pathPoint.row][pathPoint.col].isPath = true;
+				pathPoint = parent[pathPoint.row][pathPoint.col];
+			}
+			maze[startRow][startCol].isPath = true;
+
+			// 释放内存
+			for (int i = 0; i < rows; i++) {
+				delete[] visit[i];
+				delete[] parent[i];
+			}
+			delete[] visit;
+			delete[] parent;
+
+			ouputMaze();
+			return true;
+		}
+
+		// 遍历当前节点的邻接节点
+		static const int directions[4][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+		for (const auto& dir : directions) {
+			int newRow = current.row + dir[0];
+			int newCol = current.col + dir[1];
+
+			// 确保新位置在范围内且未访问且不是墙
+			if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols &&
+				!visit[newRow][newCol] && !maze[newRow][newCol].isWall) {
+				Coordinate next{ newRow, newCol };
+				BFS_Queue.enqueue(next);
+				visit[newRow][newCol] = true;
+				parent[newRow][newCol] = current; // 记录父节点
+			}
+		}
+	}
+
+	// 如果队列为空且未找到目标，释放内存
+	for (int i = 0; i < rows; i++) {
+		delete[] visit[i];
+		delete[] parent[i];
+	}
+	delete[] visit;
+	delete[] parent;
+
+	return false; // 未找到目标
 }
 
-int main() {
+void mazeGame() 
+{
+	std::cout << "=== 勇闯迷宫游戏 ===" << std::endl << std::endl;
+
+	int _rows = inputOdd(MIN_ROWCOL, MAX_ROWCOL, "行数");
+	int _cols = inputOdd(MIN_ROWCOL, MAX_ROWCOL, "列数");
+
+	Maze maze(_rows, _cols, START_ROW, START_COL, _rows - 2, _cols - 2);
+	maze.generateMaze(START_ROW, START_COL);
+
+	// 输出生成的迷宫
+	std::cout << std::endl << ">>> 生成的迷宫如下: " << std::endl;
+	maze.ouputMaze();
+
+	// DFS算法生成路径
+	std::cout << std::endl << ">>> DFS算法生成的路径为: " << std::endl;
+	maze.DFS();
+
+	// 清除上个算法产生的路径
+	maze.clearPaths();
+
+	// BFS算法生成路径
+	std::cout << std::endl << ">>> BFS算法生成的路径为: " << std::endl;
+	maze.BFS();
+}
+
+int main() 
+{
+	// 设置随机数种子
 	srand((unsigned int)(time(0)));
 
+	// 进入迷宫游戏
 	mazeGame();
+
+	// 退出程序
 	return 0;
 }
