@@ -11,6 +11,9 @@
 #include<cstring>
 #include<conio.h>
 
+// 常变量的定义
+const int NameMaxLength = 32;
+
 template <typename Type>
 struct MyTreeNode {
 	Type data;
@@ -216,7 +219,6 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 		if (std::cin.good() && input >= lowerLimit && input <= upperLimit) {
 			std::cin.clear();
 			std::cin.ignore(INT_MAX, '\n');
-			std::cout << std::endl;
 			return input;
 		}
 		else {
@@ -226,8 +228,6 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 		}
 	}
 }
-
-const int NameMaxLength = 32;
 
 struct PersonInfo 
 {
@@ -360,7 +360,7 @@ void family::addFamilyMembers()
 		return;
 	}
 	while (true) {
-		std::cout << std::endl << "请输入要添加的后代的姓名: ";
+		std::cout << "请输入要添加的后代的姓名: ";
 		std::cin >> childInfo;
 		if (myfamily.findNode(childInfo, myfamily.getRoot())) {
 			std::cout << std::endl << ">>> " << childInfo << "在家谱中已存在" << std::endl;
@@ -368,7 +368,7 @@ void family::addFamilyMembers()
 		}
 		break;
 	}
-	std::cout << ">>> 添加成功 " << std::endl << std::endl;
+	std::cout << std::endl << ">>> 添加成功 " << std::endl << std::endl;
 	std::cout << ">>> 添加后" << parentInfo << "的下一代儿女是: ";
 	if (parent->left == nullptr) {
 		myfamily.setLeftChild(parent, childInfo);
@@ -401,7 +401,8 @@ void family::removeFamilyMembers()
 		return;
 	}
 	myfamily.destroy(target->left);
-	std::cout << std::endl << std::endl << ">>> " << targetInfo << "的家庭成员已解散" << std::endl;
+	target->left = nullptr;
+	std::cout << ">>> " << targetInfo << "的家庭成员已解散" << std::endl;
 }
 
 void family::changeFamilyMembers() 
@@ -416,7 +417,7 @@ void family::changeFamilyMembers()
 		return;
 	}
 	while (true) {
-		std::cout << std::endl << "请输入要更改姓名的人的更改后姓名: ";
+		std::cout << "请输入要更改姓名的人的更改后姓名: ";
 		std::cin >> infoAfterChange;
 		if (myfamily.findNode(infoAfterChange, myfamily.getRoot())) {
 			std::cout << std::endl << ">>> " << infoAfterChange << "在家谱中已存在" << std::endl;

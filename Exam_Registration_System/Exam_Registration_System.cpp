@@ -9,18 +9,15 @@
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
+#include <limits>
+#include <cstring>
 #include <new>
 
 enum Operation { Cancel, Insert, Delete, Find, Update, Count, Rule };
 
-struct Student 
-{
-    string examID = "";
-    string name = "";
-    string gender = "";
-    string examType = "";
-    int age = 0;
-};
+const int MAX_ID_LENGTH = 12;
+const int MAX_NAME_LENGTH = 24;
+const int MAX_TYPE_LENGTH = 36;
 
 template <typename Type>
 struct MyLinkNode 
@@ -103,7 +100,7 @@ MyLinkNode<Type>* MyList<Type>::getTail(void) const
 template <typename Type>
 MyLinkNode<Type>* MyList<Type>::search(Type item) const 
 {
-    Student* current = head->next;
+    MyLinkNode<Type>* current = head->next;
     while (current != nullptr) {
         if (current->data == item)
             break;
@@ -163,7 +160,7 @@ bool MyList<Type>::insert(int i, Type& item)
         return false;
     MyLinkNode<Type>* newNode = new(std::nothrow)MyLinkNode<Type>(item);
     if (newNode == nullptr) {
-        cerr << "Error: Memory allocation failed." << endl;
+        std::cerr << "Error: Memory allocation failed." << std::endl;
         exit(-1);
     }
     newNode->next = prev->next;
@@ -192,45 +189,42 @@ bool MyList<Type>::isEmpty(void) const
     return head->next == nullptr;
 }
 
-bool isNumberString(const std::string str)
+bool isNumberString(const char str[])
 {
-    int i = 0;
-    while (str[i] != '\0') {
-        if (str[i] >= '0' && str[i] <= '9')
-            i++;
-        else
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] < '0' || str[i] > '9')
             return false;
     }
     return true;
 }
 
-std::string subString(std::string& str, int len)
-{
-    if (str.length() > len) {
-        std::cout << std::endl << "超过" << len << "个字符的内容将自动截断" << std::endl;
-        str = str.substr(0, len);
-    }
-    return str;
-}
-
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt) 
 {
     std::cout << ">>> 请输入" << prompt << " [范围: " << lowerLimit << "~" << upperLimit << "]:";
-    double input;
+    int input;
     while (true) {
         std::cin >> input;
-        if (cin.good() && input == static_cast<int>(input) && input >= lowerLimit && input <= upperLimit) {
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            return static_cast<int>(input);
+        if (std::cin.good() && input >= lowerLimit && input <= upperLimit) {
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+            return input;
         }
         else {
             std::cout << std::endl << ">>> " << prompt << "输入不合法，请重新输入！" << std::endl << std::endl;
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
         }
     }
 }
+
+struct Student
+{
+    char examID[MAX_ID_LENGTH + 1];
+    char name[MAX_NAME_LENGTH + 1];
+    char examType[MAX_TYPE_LENGTH + 1];
+    bool gender = true;
+    int age = 0;
+};
 
 class Manager {
 private:
@@ -259,9 +253,8 @@ Student Manager::studentInput()
     Student newstudent;
     while (true) {
         std::cin >> newstudent.examID;
-        newstudent.examID = subString(newstudent.examID, 12);
         if (!isNumberString(newstudent.examID)) {
-            std::cout << std::endl << "学号输入不合法，请重新输入！" << endl;
+            std::cout << std::endl << "学号输入不合法，请重新输入！" << std::endl;
             std::cin.clear();
             std::cin.ignore(INT_MAX, '\n');
             continue;
@@ -276,15 +269,25 @@ Student Manager::studentInput()
     }
     while (true) {
         std::cin >> newstudent.name;
-        newstudent.name = subString(newstudent.name, 24);
         break;
     }
     while (true) {
-        std::cin >> newstudent.gender;
-        if (newstudent.gender == "男" || newstudent.gender == "女")
+        std::string gender;
+        std::cin >> gender;
+        std::cout << gender;
+        if (gender == "nan") {
+            newstudent.gender = true;
             break;
-        else
+        }
+        else if (gender == "nv") {
+            newstudent.gender = false;
+            break;
+        }
+        else {
             std::cout << std::endl << "性别输入不合法，请重新输入！" << std::endl << std::endl;
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+        }
     }
     while (true) {
         std::cin >> newstudent.age;
@@ -295,7 +298,6 @@ Student Manager::studentInput()
     }
     while (true) {
         std::cin >> newstudent.examType;
-        newstudent.examType = subString(newstudent.examType, 36);
         break;
     }
     return newstudent;
@@ -314,14 +316,13 @@ void printHeader(std::string str)
     std::cout << "+------------------------------------------------------------------------------+" << std::endl;
 }
 
-void printStuinfo(Student stu)
-{
+void printStuinfo(const Student& stu) {
     std::cout << "| ";
-    std::cout << std::setw(14) << std::left << stu.examID << " | "
+    std::cout << std::setw(16) << std::left << stu.examID << " | "
         << std::setw(22) << std::left << stu.name << " | "
-        << std::setw(4) << std::left << stu.gender << " | "
+        << std::setw(5) << std::left << (stu.gender ? "男" : "女") << " | "
         << std::setw(4) << std::left << stu.age << " | "
-        << std::setw(20) << std::left << stu.examType << " |";
+        << std::setw(18) << std::left << stu.examType << " |";
     std::cout << std::endl;
 }
 
@@ -329,7 +330,6 @@ void printFooter()
 {
     std::cout << "+------------------------------------------------------------------------------+" << std::endl;
 }
-    
 
 void Manager::buildStudentList(int stuNum)
 {
@@ -363,11 +363,10 @@ int Manager::findPosByStuNo(const std::string id)
 
 int Manager::GetPosByStuNo(const char* prompt)
 {
-    std::string id;
+    char id[MAX_ID_LENGTH + 1];
     std::cout << "请输入" << prompt << "的考试号:";
     while (true) {
-        std::cin >> id;
-        id = subString(id, 12);
+        std::cin.getline(id, MAX_ID_LENGTH + 1);
         if (!isNumberString(id)) {
             std::cout << std::endl << "学号输入不合法，请重新输入！" << std::endl;
             std::cin.clear();

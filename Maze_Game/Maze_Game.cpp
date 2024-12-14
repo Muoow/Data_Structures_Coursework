@@ -219,6 +219,7 @@ int inputOdd(int lowerLimit, int upperLimit, const char* prompt)
 	std::cout << std::endl;
 }
 
+// 迷宫类的定义
 class Maze 
 {
 private:
@@ -281,6 +282,7 @@ bool Maze::popList(int index)
 	return true;
 }
 
+// 构造函数
 Maze::Maze(int _rows, int _cols, int _startRow, int _startCol, int _targetRow, int _targetCol): 
 	rows(_rows), cols(_cols), startRow(_startRow), startCol(_startCol), targetRow(_targetRow), targetCol(_targetCol), maze(nullptr)
 {
@@ -310,6 +312,7 @@ Maze::Maze(int _rows, int _cols, int _startRow, int _startCol, int _targetRow, i
 	}
 }
 
+// 析构函数
 Maze::~Maze() 
 {
 	for (int i = 0; i < rows; i++) 
@@ -361,6 +364,7 @@ void Maze::findAdjacentWalls()
 		pushList(maze[currRow][currCol + 1]);
 }
 
+// 生成迷宫算法
 void Maze::generateMaze(int row, int col) 
 {
 	Direction directions[4] = { Up,Down,Left,Right };
