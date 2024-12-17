@@ -7,6 +7,7 @@
  ****************************************************************/
 
 #include <iostream>
+#include <conio.h>
 #include <new>
 
 /* Define MyLinkNode structure */
@@ -173,4 +174,11 @@ int main()
     std::cout << ">>> 这两个链表的交集为: ";
     list3.printList();
     std::cout << std::endl;
+
+    // 等待回车键再退出
+    std::cout << std::endl << "Press Enter to Quit" << std::endl;
+    while (_getch() != '\r')
+        continue;
+
+    return 0;
 }

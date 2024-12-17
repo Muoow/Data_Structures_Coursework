@@ -6,8 +6,9 @@
  * Update Date:   2024/12/8
  ****************************************************************/
 
-#include<iostream>
-#include<new>
+#include <iostream>
+#include <conio.h>
+#include <new>
 
 // 优先队列的定义
 template<typename Type>
@@ -183,6 +184,11 @@ int main()
 
 	// 输出最小成本
 	std::cout << std::endl << ">>> 最小切割成本为: " << totalCost << std::endl;
+
+	// 等待回车键再退出
+	std::cout << std::endl << "Press Enter to Quit" << std::endl;
+	while (_getch() != '\r')
+		continue;
 
 	// 退出程序
 	return 0;

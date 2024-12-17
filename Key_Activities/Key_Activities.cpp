@@ -320,6 +320,11 @@ int main()
 		graph.printCriticalActivities();
 	}
 
+	// 等待回车键再退出
+	std::cout << std::endl << "Press Enter to Quit" << std::endl;
+	while (_getch() != '\r')
+		continue;
+
 	// 退出程序
 	return 0;
 }

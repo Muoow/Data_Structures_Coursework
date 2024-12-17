@@ -7,9 +7,10 @@
  ****************************************************************/
 
 #define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
-#include<new>
-#include<sstream>
+#include <iostream>
+#include <new>
+#include <conio.h>
+#include <sstream>
 
 // 常变量的定义
 const int MAX_LENGTH = 256;
@@ -433,6 +434,11 @@ int main()
 
 	// 算术表达式中缀转后缀
 	infix.infixToPostfix();
+
+	// 等待回车键再退出
+	std::cout << std::endl << "Press Enter to Quit" << std::endl;
+	while (_getch() != '\r')
+		continue;
 
 	// 程序结束
 	return 0;

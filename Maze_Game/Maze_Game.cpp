@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <conio.h>
 
 using namespace std;
 
@@ -623,6 +624,11 @@ int main()
 
 	// 进入迷宫游戏
 	mazeGame();
+
+	// 等待回车键再退出
+	std::cout << std::endl << "Press Enter to Quit" << std::endl;
+	while (_getch() != '\r')
+		continue;
 
 	// 退出程序
 	return 0;
