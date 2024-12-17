@@ -219,9 +219,9 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 
 struct Student
 {
-    char examID[MAX_ID_LENGTH + 1];
-    char name[MAX_NAME_LENGTH + 1];
-    char examType[MAX_TYPE_LENGTH + 1];
+    char examID[MAX_ID_LENGTH + 1] = { 0 };
+    char name[MAX_NAME_LENGTH + 1] = { 0 };
+    char examType[MAX_TYPE_LENGTH + 1] = { 0 };
     bool gender = true;
     int age = 0;
 };
@@ -232,7 +232,7 @@ private:
 public:
     Manager(int stuNum);
     void buildStudentList(int stuNum);
-    int findPosByStuNo(const std::string id);
+    int findPosByStuNo(const char id[]);
     int GetPosByStuNo(const char* prompt);
     Student studentInput();
     void addStudent();
@@ -274,12 +274,11 @@ Student Manager::studentInput()
     while (true) {
         std::string gender;
         std::cin >> gender;
-        std::cout << gender;
-        if (gender == "nan") {
+        if (gender == "male") {
             newstudent.gender = true;
             break;
         }
-        else if (gender == "nv") {
+        else if (gender == "female") {
             newstudent.gender = false;
             break;
         }
@@ -303,24 +302,24 @@ Student Manager::studentInput()
     return newstudent;
 }
 
-void inputPrompt(const std::string str)
+void inputPrompt(const char* prompt)
 {
-    std::cout << std::endl << ">>> 请输入关于" << str << "的考试号、姓名及其他信息" << std::endl << std::endl;
+    std::cout << std::endl << ">>> 请输入关于" << prompt << "的考试号、姓名及其他信息" << std::endl << std::endl;
 }
 
-void printHeader(std::string str)
+void printHeader(const char* prompt)
 {
-    std::cout << ">>> " << str << std::endl;
-    std::cout << "+------------------------------------------------------------------------------+" << std::endl;
-    std::cout << "|      考试号      |          姓名          | 性别 | 年龄 |       考试类型     |" << std::endl;
-    std::cout << "+------------------------------------------------------------------------------+" << std::endl;
+    std::cout << ">>> " << prompt << std::endl;
+    std::cout << "+--------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "|      考试号      |          姓名          |  性别  | 年龄 |       考试类型     |" << std::endl;
+    std::cout << "+--------------------------------------------------------------------------------+" << std::endl;
 }
 
 void printStuinfo(const Student& stu) {
     std::cout << "| ";
     std::cout << std::setw(16) << std::left << stu.examID << " | "
         << std::setw(22) << std::left << stu.name << " | "
-        << std::setw(5) << std::left << (stu.gender ? "男" : "女") << " | "
+        << std::setw(6) << std::left << (stu.gender ? "male" : "female") << " | "
         << std::setw(4) << std::left << stu.age << " | "
         << std::setw(18) << std::left << stu.examType << " |";
     std::cout << std::endl;
@@ -328,7 +327,7 @@ void printStuinfo(const Student& stu) {
 
 void printFooter()
 {
-    std::cout << "+------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "+--------------------------------------------------------------------------------+" << std::endl;
 }
 
 void Manager::buildStudentList(int stuNum)
@@ -348,12 +347,12 @@ void Manager::buildStudentList(int stuNum)
     printFooter();
 }
 
-int Manager::findPosByStuNo(const std::string id)
+int Manager::findPosByStuNo(const char id[])
 {
     MyLinkNode<Student>* current = student.getHead()->next;
     int position = 1;
     while (current != nullptr) {
-        if (current->data.examID == id)
+        if (strcmp(current->data.examID, id) == 0)
             return position;
         current = current->next;
         position++;
@@ -454,16 +453,16 @@ void Manager::statisticsFunction()
 void Manager::outputRules()
 {
     std::cout << std::endl;
-    std::cout << "+----------------------------------------------------------------------------------+" << std::endl;
-    std::cout << "|                           [信息输入的格式请注意以下规则]                         |" << std::endl;
-    std::cout << "+----------------------------------------------------------------------------------+" << std::endl;
-    std::cout << "| [格式说明] 考试号 姓名 性别 年龄 考试类型 (以空格分隔各项)                       |" << std::endl;
-    std::cout << "| [考试号] 由 12 位以下字符组成，超长将自动截断                                    |" << std::endl;
-    std::cout << "| [姓名] 由 24 位以内的字符组成，超长将自动截断                                    |" << std::endl;
-    std::cout << "| [性别] 男 / 女                                                                   |" << std::endl;
-    std::cout << "| [年龄] 在 1 到 99 范围内的整数                                                   |" << std::endl;
-    std::cout << "| [考试类型] 由 32 位以内的字符组成，超长将自动截断                                |" << std::endl;
-    std::cout << "+----------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "+-----------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "|                           [信息输入的格式请注意以下规则]                          |" << std::endl;
+    std::cout << "+-----------------------------------------------------------------------------------+" << std::endl;
+    std::cout << "| [格式说明] 考试号 姓名 性别 年龄 考试类型(不能使用中文,必须全英文,以空格分隔各项) |" << std::endl;
+    std::cout << "| [考试号] 由 12 位以下字符组成，超长将自动截断                                     |" << std::endl;
+    std::cout << "| [姓名] 由 24 位以内的字符组成，超长将自动截断                                     |" << std::endl;
+    std::cout << "| [性别] 男 / 女                                                                    |" << std::endl;
+    std::cout << "| [年龄] 在 1 到 99 范围内的整数                                                    |" << std::endl;
+    std::cout << "| [考试类型] 由 32 位以内的字符组成，超长将自动截断                                 |" << std::endl;
+    std::cout << "+-----------------------------------------------------------------------------------+" << std::endl;
     std::cout << std::endl;
 }
 
