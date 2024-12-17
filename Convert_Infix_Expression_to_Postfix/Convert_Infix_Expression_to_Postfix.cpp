@@ -44,12 +44,14 @@ public:
 	bool getHead(Type& item);
 };
 
+// 判断当前队列是否为空
 template <typename Type>
 bool MyQueue<Type>::isEmpty() const 
 {
 	return front == nullptr;
 }
 
+// 将队列重置为空
 template <typename Type>
 void MyQueue<Type>::makeEmpty() 
 {
@@ -63,12 +65,14 @@ void MyQueue<Type>::makeEmpty()
 	count = 0;
 }
 
+// 获取队列大小
 template <typename Type>
 int MyQueue<Type>::Size() const 
 {
 	return count;
 }
 
+// 向队列中插入
 template <typename Type>
 void MyQueue<Type>::enqueue(const Type& item) 
 {
@@ -87,6 +91,7 @@ void MyQueue<Type>::enqueue(const Type& item)
 	count++;
 }
 
+// 从队列中弹出
 template <typename Type>
 bool MyQueue<Type>::dequeue(Type& item)
 {

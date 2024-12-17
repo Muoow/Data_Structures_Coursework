@@ -194,7 +194,7 @@ void Bank::dealWith()
 	std::cout << std::endl << ">>> ";
 
 	while (!queueA.isEmpty() || !queueB.isEmpty()) {
-
+		// 根据两个窗口的处理速度进行处理
 		for (int i = 0; i < PROCESSSPEED_A && !queueA.isEmpty(); i++) {
 			int customer;
 			queueA.deQueue(customer);

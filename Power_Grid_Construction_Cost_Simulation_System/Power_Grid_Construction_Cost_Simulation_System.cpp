@@ -160,6 +160,7 @@ bool MyUndirectedGraph<Type>::findEdge(const Type& vertexA, const Type& vertexB)
 	return true;
 }
 
+// Prim算法找出最小生成树
 template <typename Type>
 void MyUndirectedGraph<Type>::primMST(const Type& startVertex)
 {
@@ -241,6 +242,7 @@ void MyUndirectedGraph<Type>::printMST()
 	}
 }
 
+// 输入指定范围内的整数
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt) 
 {
 	std::cout << ">>> " << "请输入" << prompt << " 整数范围: [" << lowerLimit << "~" << upperLimit << "]: ";
@@ -261,6 +263,7 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 	}
 }
 
+// 电网系统类的定义
 class PowerGrid 
 {
 private:
@@ -275,6 +278,7 @@ public:
 	void printMinimumSpanningTree();
 };
 
+// 选择电网功能
 bool PowerGrid::selectOption() 
 {
 	std::cout << ">>> 请选择要使用的功能: ";
@@ -308,6 +312,7 @@ bool PowerGrid::selectOption()
 	return true;
 }
 
+// 创建电网节点
 void PowerGrid::createGridVertices() 
 {
 	int numVertices = inputInteger(2, MAX_VERTICES, "要添加的节点数量");
@@ -327,6 +332,7 @@ void PowerGrid::createGridVertices()
 	std::cout << std::endl;
 }
 
+// 创建电网的边
 void PowerGrid::createGridEdges() 
 {
 	int numVertices = grid.getVertexCount();
@@ -355,6 +361,7 @@ void PowerGrid::createGridEdges()
 	std::cout << std::endl;
 }
 
+// 建立最小生成树
 void PowerGrid::constructMinimumSpanningTree() 
 {
 	if (grid.getVertexCount() == 0) {
@@ -374,6 +381,7 @@ void PowerGrid::constructMinimumSpanningTree()
 		std::cout << "最小生成树生成失败！" << std::endl << std::endl;
 }
 
+// 打印最小生成树
 void PowerGrid::printMinimumSpanningTree() 
 {	
 	grid.printMST();
@@ -392,10 +400,14 @@ int main()
 	std::cout << "|        [4] --- 显示最小生成树        |" << std::endl;
 	std::cout << "|        [5] --- 退出系统              |" << std::endl;
 	std::cout << "+--------------------------------------+" << std::endl << std::endl;
+	
+	// 初始化电网系统
 	PowerGrid powergrid(MAX_VERTICES);
 
+	// 选择功能
 	while (powergrid.selectOption());
 
+	// 退出系统提示词
 	std::cout << ">>> 已成功退出电网造价模拟系统" << std::endl;
 	return 0;
 }

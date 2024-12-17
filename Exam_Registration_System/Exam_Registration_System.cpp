@@ -13,12 +13,15 @@
 #include <cstring>
 #include <new>
 
+// 系统可进行操作
 enum Operation { Cancel, Insert, Delete, Find, Update, Count, Rule };
 
+//常变量的定义
 const int MAX_ID_LENGTH = 12;
 const int MAX_NAME_LENGTH = 24;
 const int MAX_TYPE_LENGTH = 36;
 
+// 链表节点模板类的定义
 template <typename Type>
 struct MyLinkNode 
 {
@@ -28,6 +31,7 @@ struct MyLinkNode
     MyLinkNode(const Type& item, MyLinkNode<Type>* ptr = nullptr) { data = item; next = ptr; }
 };
 
+// 模板类链表的定义
 template <typename Type>
 class MyList 
 {
@@ -49,6 +53,7 @@ public:
     bool isEmpty(void) const;
 };
 
+// 构造函数
 template <typename Type>
 MyList<Type>::MyList() 
 {
@@ -60,6 +65,7 @@ MyList<Type>::MyList()
     tail = head;
 }
 
+// 析构函数
 template <typename Type>
 MyList<Type>::~MyList() 
 {
@@ -73,6 +79,7 @@ MyList<Type>::~MyList()
     tail = nullptr;
 }
 
+// 获得链表的长度
 template <typename Type>
 int MyList<Type>::getLength(void) const 
 {
@@ -85,18 +92,21 @@ int MyList<Type>::getLength(void) const
     return len;
 }
 
+// 获取链表头
 template <typename Type>
 MyLinkNode<Type>* MyList<Type>::getHead(void) const 
 {
     return head;
 }
 
+// 获取链表尾部
 template <typename Type>
 MyLinkNode<Type>* MyList<Type>::getTail(void) const 
 {
     return tail;
 }
 
+// 寻找特定节点
 template <typename Type>
 MyLinkNode<Type>* MyList<Type>::search(Type item) const 
 {
@@ -110,6 +120,7 @@ MyLinkNode<Type>* MyList<Type>::search(Type item) const
     return current;
 }
 
+// 找到某一位置的节点
 template <typename Type>
 MyLinkNode<Type>* MyList<Type>::locate(int i) const 
 {
@@ -124,6 +135,7 @@ MyLinkNode<Type>* MyList<Type>::locate(int i) const
     return current;
 }
 
+// 获取某一结点的数据
 template <typename Type>
 bool MyList<Type>::getData(int i, Type& item) const
 {
@@ -138,6 +150,7 @@ bool MyList<Type>::getData(int i, Type& item) const
     }
 }
 
+// 设置某一结点的数据
 template <typename Type>
 bool MyList<Type>::setData(int i, Type& item)
 {
@@ -152,6 +165,7 @@ bool MyList<Type>::setData(int i, Type& item)
     }
 }
 
+// 在特定位置插入节点
 template <typename Type>
 bool MyList<Type>::insert(int i, Type& item) 
 {
@@ -170,6 +184,7 @@ bool MyList<Type>::insert(int i, Type& item)
     return true;
 }
 
+// 删去某一结点
 template <typename Type>
 bool MyList<Type>::remove(int i, Type& item) 
 {
@@ -183,12 +198,14 @@ bool MyList<Type>::remove(int i, Type& item)
     return true;
 }
 
+// 判断链表是否为空
 template <typename Type>
 bool MyList<Type>::isEmpty(void) const
 {
     return head->next == nullptr;
 }
 
+// 判断字符数组中的成员是否全是数字
 bool isNumberString(const char str[])
 {
     for (int i = 0; str[i] != '\0'; i++) {
@@ -198,6 +215,7 @@ bool isNumberString(const char str[])
     return true;
 }
 
+// 输入一个整数
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt) 
 {
     std::cout << ">>> 请输入" << prompt << " [范围: " << lowerLimit << "~" << upperLimit << "]:";
@@ -217,6 +235,7 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
     }
 }
 
+// 学生信息结构体
 struct Student
 {
     char examID[MAX_ID_LENGTH + 1] = { 0 };
@@ -226,6 +245,7 @@ struct Student
     int age = 0;
 };
 
+// 学生管理系统类的定义
 class Manager {
 private:
     MyList<Student> student;
@@ -243,11 +263,13 @@ public:
     void outputRules(); 
 };
 
+// 构造函数
 Manager::Manager(int stuNum)
 {
     buildStudentList(stuNum);
 }
 
+// 输入学生信息（有错误处理）
 Student Manager::studentInput() 
 {
     Student newstudent;
@@ -302,11 +324,13 @@ Student Manager::studentInput()
     return newstudent;
 }
 
+// 输入信息提示
 void inputPrompt(const char* prompt)
 {
     std::cout << std::endl << ">>> 请输入关于" << prompt << "的考试号、姓名及其他信息" << std::endl << std::endl;
 }
 
+// 
 void printHeader(const char* prompt)
 {
     std::cout << ">>> " << prompt << std::endl;
@@ -315,6 +339,7 @@ void printHeader(const char* prompt)
     std::cout << "+--------------------------------------------------------------------------------+" << std::endl;
 }
 
+// 输出学生信息格式
 void printStuinfo(const Student& stu) {
     std::cout << "| ";
     std::cout << std::setw(16) << std::left << stu.examID << " | "
@@ -330,6 +355,7 @@ void printFooter()
     std::cout << "+--------------------------------------------------------------------------------+" << std::endl;
 }
 
+// 建立学生链表
 void Manager::buildStudentList(int stuNum)
 {
     inputPrompt("全部考生");
@@ -347,6 +373,7 @@ void Manager::buildStudentList(int stuNum)
     printFooter();
 }
 
+// 找到学生位置
 int Manager::findPosByStuNo(const char id[])
 {
     MyLinkNode<Student>* current = student.getHead()->next;
@@ -377,6 +404,7 @@ int Manager::GetPosByStuNo(const char* prompt)
     return findPosByStuNo(id);
 }
 
+// 添加学生
 void Manager::addStudent() 
 {
     int pos = inputInteger(1, student.getLength() + 1, "插入考生的位置");
@@ -385,6 +413,7 @@ void Manager::addStudent()
     student.insert(pos, temp);
 }
 
+// 删除学生
 void Manager::deleteStudent() 
 {
     if (student.getLength() == 0) {
@@ -400,6 +429,7 @@ void Manager::deleteStudent()
     student.remove(pos, temp);
 }
 
+// 找到学生并输出信息
 void Manager::findStudent() 
 {
     if (student.isEmpty()) {
@@ -418,6 +448,7 @@ void Manager::findStudent()
     printFooter();
 }
 
+// 修改学生信息
 void Manager::updateStudent()
 {
     if (student.isEmpty()) {
@@ -434,6 +465,7 @@ void Manager::updateStudent()
     student.setData(pos, temp);
 }
 
+// 统计学生信息功能
 void Manager::statisticsFunction()
 {
     if (student.isEmpty()) {
@@ -450,6 +482,7 @@ void Manager::statisticsFunction()
     std::cout << std::endl;
 }
 
+// 系统输入格式规范
 void Manager::outputRules()
 {
     std::cout << std::endl;
@@ -466,6 +499,7 @@ void Manager::outputRules()
     std::cout << std::endl;
 }
 
+// 选择功能
 Operation selectOperation() 
 {
     std::cout << std::endl << ">>> 菜单: [1]新增 [2]删除 [3]查询 [4]修改 [5]统计 [6]帮助 [0]退出" << std::endl;

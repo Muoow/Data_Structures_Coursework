@@ -14,6 +14,7 @@
 // 常变量的定义
 const int NameMaxLength = 32;
 
+// 二叉树节点定义
 template <typename Type>
 struct MyTreeNode {
 	Type data;
@@ -22,6 +23,7 @@ struct MyTreeNode {
 	MyTreeNode(const Type& value) : data(value), left(nullptr), right(nullptr) {}
 };
 
+// 二叉树类的定义
 template <typename Type>
 class MyBinaryTree {
 private:
@@ -30,12 +32,14 @@ public:
 	MyBinaryTree() : root(nullptr) {}
 	MyBinaryTree(Type& item);
 	~MyBinaryTree() { destroy(root); }
+	// 对二叉树的基础操作
 	void destroy(MyTreeNode<Type>* subTree);
 	bool isEmpty(void) { return root == nullptr; }
 	bool setLeftChild(MyTreeNode<Type>* parent, Type& item);
 	bool setRightChild(MyTreeNode<Type>* parent, Type& item);
 	bool modifyNode(MyTreeNode<Type>* current, Type& item);
 	int getSize(MyTreeNode<Type>* current) { return (current == nullptr) ? 0 : (getSize(current->left) + getSize(current->right) + 1); }
+	// 获取二叉树节点
 	MyTreeNode<Type>* getRoot(void) { return root; }
 	MyTreeNode<Type>* getParent(MyTreeNode<Type>* current, MyTreeNode<Type>* subTree);
 	MyTreeNode<Type>* getLeftChild(MyTreeNode<Type>* current) { return current == nullptr ? nullptr : current->leftChild; }
@@ -71,6 +75,7 @@ void MyBinaryTree<Type>::destroy(MyTreeNode<Type>* subTree)
 	}
 }
 
+// 设置当前节点的左孩子
 template <typename Type>
 bool MyBinaryTree<Type>::setLeftChild(MyTreeNode<Type>* parent, Type& item) 
 {
@@ -86,6 +91,7 @@ bool MyBinaryTree<Type>::setLeftChild(MyTreeNode<Type>* parent, Type& item)
 	return true;
 }
 
+// 设置当前节点的右孩子
 template <typename Type>
 bool MyBinaryTree<Type>::setRightChild(MyTreeNode<Type>* parent, Type& item) 
 {
@@ -101,6 +107,7 @@ bool MyBinaryTree<Type>::setRightChild(MyTreeNode<Type>* parent, Type& item)
 	return true;
 }
 
+// 修改节点信息
 template <typename Type>
 bool MyBinaryTree<Type>::modifyNode(MyTreeNode<Type>* current, Type& item)
 {
@@ -110,6 +117,7 @@ bool MyBinaryTree<Type>::modifyNode(MyTreeNode<Type>* current, Type& item)
 	return true;
 }
 
+// 获得当前节点的父节点
 template <typename Type>
 MyTreeNode<Type>* MyBinaryTree<Type>::getParent(MyTreeNode<Type>* current, MyTreeNode<Type>* subTree) 
 {
@@ -142,6 +150,7 @@ MyTreeNode<Type>* MyBinaryTree<Type>::findNode(const Type& item, MyTreeNode<Type
 	return findNode(item, subTree->right);
 }
 
+// 前序遍历
 template <typename Type>
 void MyBinaryTree<Type>::preorder(MyTreeNode<Type>* node) 
 {
@@ -152,6 +161,7 @@ void MyBinaryTree<Type>::preorder(MyTreeNode<Type>* node)
 	}
 }
 
+// 中序遍历
 template <typename Type>
 void MyBinaryTree<Type>::inorder(MyTreeNode<Type>* node)
 {
@@ -162,6 +172,7 @@ void MyBinaryTree<Type>::inorder(MyTreeNode<Type>* node)
 	}
 }
 
+// 后序遍历
 template <typename Type>
 void MyBinaryTree<Type>::postorder(MyTreeNode<Type>* node) 
 {
@@ -210,6 +221,7 @@ MyTreeNode<Type>* MyBinaryTree<Type>::copyTree(MyTreeNode<Type>* subTree) {
 	return newNode;
 }
 
+// 输入一个指定范围内的整数
 int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 {
 	std::cout << ">>> " << "请输入" << prompt << " 整数范围: [" << lowerLimit << "~" << upperLimit << "]: ";
@@ -229,10 +241,12 @@ int inputInteger(int lowerLimit, int upperLimit, const char* prompt)
 	}
 }
 
+// 个人信息结构体的定义
 struct PersonInfo 
 {
 	char name[NameMaxLength + 1];
 	PersonInfo() { strcpy(name, ""); }
+	// 运算符的重载
 	PersonInfo& operator=(const PersonInfo& other) { if (this != &other) strcpy(name, other.name); return *this; }
 	bool operator==(const PersonInfo& other) { return strcmp(name, other.name) == 0; }
 	friend std::istream& operator>>(std::istream& in, PersonInfo& info);
@@ -251,6 +265,7 @@ std::ostream& operator<<(std::ostream& out, PersonInfo& info)
 	return out;
 }
 
+// 家庭类的定义
 class family 
 {
 private:
@@ -270,6 +285,7 @@ family::family(PersonInfo& ancestor)
 	myfamily = MyBinaryTree<PersonInfo>(ancestor);
 }
 
+// 选择功能
 bool family::selectOptn() 
 {
 	char option;
@@ -298,12 +314,14 @@ bool family::selectOptn()
 			break;
 		case '5':
 			countFamilyMembers();
+			break;
 		case '6':
 			return false;
 	}
 	return true;
 }
 
+// 完善家谱的功能
 void family::completeFamilyMembers() 
 {
 	std::cout << "请输入要添加后代的长辈的姓名: ";
@@ -311,6 +329,7 @@ void family::completeFamilyMembers()
 	std::cin >> parentInfo;
 	std::cout << std::endl;
 	MyTreeNode<PersonInfo>* root = myfamily.getRoot();
+	// 可能的错误处理
 	MyTreeNode<PersonInfo>* parent = myfamily.findNode(parentInfo, root);
 	if (parent == nullptr) {
 		std::cout << ">>> 未在家谱中找到" << parentInfo << "，请确认姓名输入是否正确！" << std::endl;
@@ -348,12 +367,14 @@ void family::completeFamilyMembers()
 	std::cout << std::endl;
 }
 
+// 添加家庭成员的功能
 void family::addFamilyMembers() 
 {
 	std::cout << "请输入要添加后代的长辈的姓名: ";
 	PersonInfo parentInfo,childInfo;
 	std::cin >> parentInfo;
 	std::cout << std::endl;
+	// 可能的错误处理
 	MyTreeNode<PersonInfo>* parent = myfamily.findNode(parentInfo, myfamily.getRoot());
 	if (parent == nullptr) {
 		std::cout << ">>> 未在家谱中找到" << parentInfo << "，请确认姓名输入是否正确！" << std::endl;
@@ -385,12 +406,14 @@ void family::addFamilyMembers()
 	std::cout << childInfo << std::endl;
 }
 
+// 删去家庭成员的功能
 void family::removeFamilyMembers() 
 {
 	std::cout << "请输入要解散家庭成员的人的名字: ";
 	PersonInfo targetInfo;
 	std::cin >> targetInfo;
 	std::cout << std::endl;
+	// 可能的错误处理
 	MyTreeNode<PersonInfo>* target = myfamily.findNode(targetInfo, myfamily.getRoot());
 	if (target == nullptr) {
 		std::cout  << ">>> 未在家谱中找到" << targetInfo << "，请确认姓名输入是否正确！" << std::endl;
@@ -405,12 +428,14 @@ void family::removeFamilyMembers()
 	std::cout << ">>> " << targetInfo << "的家庭成员已解散" << std::endl;
 }
 
+// 修改家庭成员的信息
 void family::changeFamilyMembers() 
 {
 	std::cout << "请输入需要修改名字的成员的更改前姓名: ";
 	PersonInfo targetInfo,infoAfterChange;
 	std::cin >> targetInfo;
 	std::cout << std::endl;
+	// 可能的错误处理
 	MyTreeNode<PersonInfo>* target = myfamily.findNode(targetInfo, myfamily.getRoot());
 	if (target == nullptr) {
 		std::cout << ">>> 未在家谱中找到" << targetInfo << "，请确认姓名输入是否正确！" << std::endl;
@@ -429,24 +454,26 @@ void family::changeFamilyMembers()
 	std::cout << std::endl << ">>> " << targetInfo << "已更名为" << infoAfterChange << std::endl;
 }
 
+// 统计家庭成员数量
 void family::countFamilyMembers() 
 {
 	std::cout << "请输入要统计的家庭成员的人的姓名: ";
 	PersonInfo targetInfo;
 	std::cin >> targetInfo;
 	std::cout << std::endl;
+	// 可能的错误处理
 	MyTreeNode<PersonInfo>* target = myfamily.findNode(targetInfo, myfamily.getRoot());
 	if (target == nullptr) {
 		std::cout << ">>> 未在家谱中找到" << targetInfo << "，请确认姓名输入是否正确！" << std::endl;
 		return;
 	}
 	int num = myfamily.getSize(target->left);
-	std::cout << std::endl << ">>> " << targetInfo << "共有" << num << "个儿女";
+	std::cout <<  ">>> " << targetInfo << "共有" << num << "个儿女";
 	if (num != 0) {
 		std::cout << "，分别是: ";
 		myfamily.inorder(target->left);
 	}
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
 }
 
 int main() 

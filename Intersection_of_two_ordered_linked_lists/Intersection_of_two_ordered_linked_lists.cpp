@@ -19,6 +19,7 @@ struct MyLinkNode
     MyLinkNode(const Type& item, MyLinkNode<Type>* ptr = NULL) { data = item; link = ptr; }
 };
 
+// 模板链表类的定义
 template <typename Type>
 class MyList
 {
@@ -73,6 +74,7 @@ void MyList<Type>::createList(Type& end)
     }
 }
 
+// 打印链表
 template <typename Type>
 void MyList<Type>::printList() 
 {
@@ -92,18 +94,21 @@ void MyList<Type>::printList()
     std::cout << std::endl;
 }
 
+// 复制链表
 template <typename Type>
 void MyList<Type>::createList(MyLinkNode<Type>* _head)
 {
     head = _head;
 }
 
+// 获取链表的头节点
 template <typename Type>
 MyLinkNode<Type>* MyList<Type>::getHead()
 {
     return head;
 }
 
+// 寻找两个链表的交集
 template <typename Type>
 MyLinkNode<Type>* findIntersection(MyLinkNode<Type>* l1, MyLinkNode<Type>* l2)
 {
